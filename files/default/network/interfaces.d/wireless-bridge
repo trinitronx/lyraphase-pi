@@ -1,0 +1,23 @@
+## 2016-06-23: Adding wireless bridge configuration
+## Similar to, but not exactly the same as:
+##   https://giorgiosadventures.wordpress.com/2014/09/10/raspberry-pi-as-wireless-wired-bridge/
+##
+## Also just use 1st eth0 stanza for testing a single host with ProxyARP:
+##   https://wiki.debian.org/BridgeNetworkConnectionsProxyArp
+
+#auto eth0
+#iface eth0 inet static
+#  address 192.168.1.10
+#  netmask 255.255.255.0
+#  network 192.168.1.0
+#  gateway 192.168.1.1
+#  broadcast 192.168.1.255
+
+#auto br0
+#iface br0 inet static
+#  address 192.168.1.11
+#  netmask 255.255.255.0
+#  network 192.168.1.0
+#  gateway 192.168.1.1
+#  broadcast 192.168.1.255
+#  bridge-ports eth0 wlan0
