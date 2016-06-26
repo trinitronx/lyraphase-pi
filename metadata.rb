@@ -1,0 +1,7 @@
+name 'lyraphase-pi'
+maintainer 'James Cuzella'
+maintainer_email 'you@example.com'
+license 'gplv3'
+description 'Installs/Configures lyraphase-pi'
+long_description 'Installs/Configures lyraphase-pi'
+version '0.1.0'
