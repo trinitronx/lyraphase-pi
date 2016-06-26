@@ -1,0 +1,18 @@
+#!/bin/bash
+
+
+set -x
+
+wlan0_ip=$(/sbin/ip addr show wlan0 | perl -wne 'm|^\s+inet (.*)/| && print $1')
+echo "IP: ${wlan0_ip}/32"
+
+# clone the dhcp-allocated IP to eth0 so dhcp-helper will relay for the correct subnet
+echo "RUNNING: /sbin/ip addr add ${wlan0_ip}/32 dev eth0"
+/sbin/ip addr add ${wlan0_ip}/32 dev eth0
+
+echo "RUNNING: /usr/sbin/parprouted eth0 wlan0"
+/usr/sbin/parprouted eth0 wlan0
+
+echo "RUNNING /sbin/ifup eth0"
+/sbin/ifup eth0
+
