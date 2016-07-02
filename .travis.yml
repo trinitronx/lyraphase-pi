@@ -1,0 +1,24 @@
+language: generic
+
+sudo: false
+
+env:
+  global:
+  - PATH="/opt/chefdk/bin:/opt/chef/bin:/opt/chef/embedded/bin:/opt/chefdk/embedded/bin:$PATH"
+
+addons:
+  apt:
+    sources:
+    - chef-stable-precise
+    packages:
+    - chefdk
+
+before_script:
+  - eval "$(chef shell-init $(basename $SHELL))"
+
+script:
+  - rake berks
+  - rake knife
+  - rake foodcritic
+  - rake chefspec
+
