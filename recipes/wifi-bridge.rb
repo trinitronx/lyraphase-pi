@@ -20,3 +20,10 @@
 node['lyraphase-pi']['wifi-bridge']['packages'].each do |pkg|
   package pkg
 end
+
+template '/etc/avahi/avahi-daemon.conf' do
+  source 'avahi/avahi-daemon.conf.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
