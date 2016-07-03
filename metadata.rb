@@ -7,3 +7,7 @@ long_description 'Installs/Configures lyraphase-pi'
 version '0.1.0'
 issues_url 'https://github.com/trinitronx/lyraphase-pi/issues'
 source_url 'https://github.com/trinitronx/lyraphase-pi'
+
+
+supports 'debian'
+depends 'sysctl', '~> 0.8.0'
