@@ -50,6 +50,15 @@ template '/etc/network/interfaces.d/wireless-bridge-dhcp-parprouted' do
   mode '0644'
 end
 
+['setup', 'cleanup'].each do |script|
+  template "/etc/network/wireless-bridge-#{script}" do
+    source "network/wireless-bridge-#{script}.erb"
+    owner 'root'
+    group 'root'
+    mode '0755'
+  end
+end
+
 sysctl_param 'net.ipv4.ip_forward' do
   value 1
 end

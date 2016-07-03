@@ -1,0 +1,20 @@
+#!/bin/bash
+
+set -x
+
+/usr/bin/killall /usr/sbin/parprouted
+/sbin/ifdown eth0
+
+eth0_ip=$(ip addr show dev eth0 | perl -wne 'm|^\s+inet (.*/\d+)| && print $1')
+[ -n $eth0_ip ] && ip addr del $eth0_ip dev eth0
+
+dhclient_pid=$(cat /run/dhclient.wlan0.pid)
+[ -n $dhclient_pid ] && kill $dhclient_pid
+
+wpa_supplicant_pid=$(cat /run/wpa_supplicant.wlan0.pid)
+if [ -n $wpa_supplicant_pid ]; then
+  wpa_cli disconnect
+  wpa_cli quit
+  kill $wpa_supplicant_pid
+fi
+
