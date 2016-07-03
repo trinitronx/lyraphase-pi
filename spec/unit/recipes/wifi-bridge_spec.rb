@@ -59,5 +59,15 @@ describe 'lyraphase-pi::wifi-bridge' do
       expect( chef_run ).to render_file(dhcp_helper_vars).with_content(File.open(test_fixture_filename, 'r').read)
     end
 
+    it 'installs /etc/network/interfaces' do
+      etc_network_interfaces = '/etc/network/interfaces'
+      test_fixture_filename = File.join( File.dirname(__FILE__), '..', '..', '..', 'test', 'fixtures', 'network', 'interfaces')
+      expect( chef_run ).to create_template(etc_network_interfaces).with_path(etc_network_interfaces)
+        .with_owner('root')
+        .with_group('root')
+        .with_mode('0644')
+      expect( chef_run ).to render_file(etc_network_interfaces).with_content(File.open(test_fixture_filename, 'r').read)
+    end
+
   end
 end

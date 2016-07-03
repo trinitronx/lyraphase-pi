@@ -33,3 +33,10 @@ template '/etc/default/dhcp-helper' do
   group 'root'
   mode '0644'
 end
+
+template '/etc/network/interfaces' do
+  source 'network/interfaces.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
