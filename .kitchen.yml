@@ -12,10 +12,15 @@ provisioner:
 
 platforms:
   - name: ubuntu-14.04
-  - name: centos-7.1
+# Rasbpian jessie ~= debian 8.0
+  - name: debian-8.1
 
 suites:
   - name: default
     run_list:
       - recipe[lyraphase-pi::default]
+    attributes:
+  - name: wifi-bridge
+    run_list:
+      - recipe[lyraphase-pi::wifi-bridge]
     attributes:
