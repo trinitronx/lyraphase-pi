@@ -33,6 +33,10 @@ describe 'lyraphase-pi::wifi-bridge' do
       expect { chef_run }.to_not raise_error
     end
 
+    it 'includes sysctl cookbook for sysctl_param LWRP' do
+      expect( chef_run ).to include_recipe 'sysctl::default'
+    end
+
     it 'installs Proxy ARP packages' do
       packages.each do |pkg|
         expect( chef_run ).to install_package(pkg)
@@ -77,6 +81,10 @@ describe 'lyraphase-pi::wifi-bridge' do
         .with_group('root')
         .with_mode('0644')
       expect( chef_run ).to render_file(etc_network_interfaces_wireless_bridge).with_content(File.open(test_fixture_filename, 'r').read)
+    end
+
+    it 'installs network config for dhcp' do
+      expect( chef_run ).to apply_sysctl_param('net.ipv4.ip_forward').with(value: 1)
     end
 
   end

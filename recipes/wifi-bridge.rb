@@ -17,6 +17,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+include_recipe 'sysctl::default'
+
 node['lyraphase-pi']['wifi-bridge']['packages'].each do |pkg|
   package pkg
 end
@@ -46,4 +48,8 @@ template '/etc/network/interfaces.d/wireless-bridge-dhcp-parprouted' do
   owner 'root'
   group 'root'
   mode '0644'
+end
+
+sysctl_param 'net.ipv4.ip_forward' do
+  value 1
 end
