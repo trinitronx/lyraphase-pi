@@ -55,7 +55,7 @@ describe 'lyraphase-pi::wifi-bridge' do
 
     it 'installs /etc/default dhcp-helper vars' do
       dhcp_helper_vars = '/etc/default/dhcp-helper'
-      test_fixture_filename = File.join( File.dirname(__FILE__), '..', '..', '..', 'test', 'fixtures', 'dhcp-helper')
+      test_fixture_filename = File.join( File.dirname(__FILE__), '..', '..', '..', 'test', 'fixtures', 'default', 'dhcp-helper')
       expect( chef_run ).to create_template(dhcp_helper_vars).with_path(dhcp_helper_vars)
         .with_owner('root')
         .with_group('root')
