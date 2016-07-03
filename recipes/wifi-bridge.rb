@@ -40,3 +40,10 @@ template '/etc/network/interfaces' do
   group 'root'
   mode '0644'
 end
+
+template '/etc/network/interfaces.d/wireless-bridge-dhcp-parprouted' do
+  source 'network/interfaces.d/wireless-bridge-dhcp-parprouted.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end

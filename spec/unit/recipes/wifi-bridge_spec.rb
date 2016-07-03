@@ -69,5 +69,15 @@ describe 'lyraphase-pi::wifi-bridge' do
       expect( chef_run ).to render_file(etc_network_interfaces).with_content(File.open(test_fixture_filename, 'r').read)
     end
 
+    it 'installs network config for dhcp' do
+      etc_network_interfaces_wireless_bridge = '/etc/network/interfaces.d/wireless-bridge-dhcp-parprouted'
+      test_fixture_filename = File.join( File.dirname(__FILE__), '..', '..', '..', 'test', 'fixtures', 'network', 'interfaces.d', 'wireless-bridge-dhcp-parprouted')
+      expect( chef_run ).to create_template(etc_network_interfaces_wireless_bridge).with_path(etc_network_interfaces_wireless_bridge)
+        .with_owner('root')
+        .with_group('root')
+        .with_mode('0644')
+      expect( chef_run ).to render_file(etc_network_interfaces_wireless_bridge).with_content(File.open(test_fixture_filename, 'r').read)
+    end
+
   end
 end
