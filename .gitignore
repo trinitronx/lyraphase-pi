@@ -11,6 +11,7 @@ Berksfile.lock
 Gemfile.lock
 bin/*
 .bundle/*
+cookbooks/*
 
 .kitchen/
 .kitchen.local.yml
