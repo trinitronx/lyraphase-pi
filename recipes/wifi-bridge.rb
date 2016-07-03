@@ -27,3 +27,9 @@ template '/etc/avahi/avahi-daemon.conf' do
   group 'root'
   mode '0644'
 end
+
+template '/etc/default/dhcp-helper' do
+  owner 'root'
+  group 'root'
+  mode '0644'
+end

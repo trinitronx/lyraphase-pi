@@ -1,0 +1,11 @@
+# Option flags used to start dhcp-helper.
+#
+# You will need at least "-s <DHCP server>" or
+# "-b <interface> so that dhcp-helper knows where 
+# to relay DHCP requests. 
+#
+# See "man 8 dhcp-helper" for more details.  
+
+#DHCPHELPER_OPTS="-b eth0"
+# relay dhcp requests as broadcast to wlan0
+DHCPHELPER_OPTS="-b wlan0"
