@@ -65,7 +65,7 @@ module TestFixtureExtensions
   # (see Base#create_sandbox)
   def create_sandbox
     super
-    Kitchen.logger.info('Running Kitchen::Verifier::Busser#create_sandboxe')
+    Kitchen.logger.info('Running Kitchen::Verifier::Busser#create_sandbox')
     prepare_helpers
     prepare_fixtures
     prepare_suites
@@ -78,8 +78,9 @@ module TestFixtureExtensions
   # @api private
   def fixture_files
     Kitchen.logger.info('Running Kitchen::Verifier::Busser#fixture_files')
+    Kitchen.logger.info("kitchen_root: #{config[:kitchen_root]}")
     glob = File.join(config[:kitchen_root], 'test', 'fixtures', "**/*")
-    Kitchen.logger.info("Copying test helpers / fixtures: #{Dir.glob(globs).reject{ |f| File.directory?(f)}}")
+    Kitchen.logger.info("Copying test helpers / fixtures: #{Dir.glob(glob).reject{ |f| File.directory?(f)}}")
     Dir.glob(glob).reject { |f| File.directory?(f) }
   end
   # Copies all common testing helper files into the suites directory in
@@ -88,10 +89,14 @@ module TestFixtureExtensions
   # @api private
   def prepare_fixtures
     Kitchen.logger.info('Running Kitchen::Verifier::Busser#prepare_fixtures')
-    base = File.join(config[:test_base_path], "fixtures")
-
-    helper_files.each do |src|
+    Kitchen.logger.info("fixture_files: #{fixture_files}")
+    Kitchen.logger.info("Copying into: #{File.join(sandbox_suites_dir, config[:test_base_path], "fixtures")}")
+    base = File.join(config[:test_base_path])
+    Kitchen.logger.info("base path: #{base}")
+    fixture_files.each do |src|
+      # dest = File.join(sandbox_suites_dir, src.sub("#{base}/", ""))
       dest = File.join(sandbox_suites_dir, src.sub("#{base}/", ""))
+      Kitchen.logger.info("Dest: #{dest}")
       FileUtils.mkdir_p(File.dirname(dest))
       FileUtils.cp(src, dest, :preserve => true)
     end
