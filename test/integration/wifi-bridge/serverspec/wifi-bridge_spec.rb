@@ -24,7 +24,7 @@ describe 'lyraphase-pi::wifi-bridge' do
         its(:content) { should eq(File.open(fixture_path, 'r').read) }
         it { should be_owned_by 'root' }
         it { should be_grouped_into 'root' }
-        it { should be_mode 0644 }
+        it { should be_mode '644' }
       end
     end
   end
@@ -34,7 +34,7 @@ describe 'lyraphase-pi::wifi-bridge' do
       describe file(File.join('', 'etc', 'network', "wireless-bridge-#{script}")) do
         it { should be_owned_by 'root' }
         it { should be_grouped_into 'root' }
-        it { should be_mode 0755 }
+        it { should be_mode '755' }
       end
     end
   end
