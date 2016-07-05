@@ -2,19 +2,27 @@
 
 set -x
 
+#/bin/systemctl stop parprouted
 /usr/bin/killall /usr/sbin/parprouted
 /sbin/ifdown eth0
 
 eth0_ip=$(ip addr show dev eth0 | perl -wne 'm|^\s+inet (.*/\d+)| && print $1')
-[ -n $eth0_ip ] && ip addr del $eth0_ip dev eth0
+[ -n "$eth0_ip" ] && ip addr del $eth0_ip dev eth0
 
 dhclient_pid=$(cat /run/dhclient.wlan0.pid)
-[ -n $dhclient_pid ] && kill $dhclient_pid
+[ -n "$dhclient_pid" ] && kill $dhclient_pid
+
+dhcp_helper_pid=$(pidof dhcp-helper)
+if [ -n "$dhcp_helper_pid" ]; then
+  systemctl stop dhcp-helper || kill $dhcp_helper_pid
+fi
 
 wpa_supplicant_pid=$(cat /run/wpa_supplicant.wlan0.pid)
-if [ -n $wpa_supplicant_pid ]; then
+if [ -n "$wpa_supplicant_pid" ]; then
   wpa_cli disconnect
   wpa_cli quit
-  kill $wpa_supplicant_pid
+  # Leave it up... it can be in disconnected state
+  # Reconnect next time `ifup wlan0` is run
+  #kill $wpa_supplicant_pid
 fi
 
