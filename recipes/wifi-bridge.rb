@@ -30,10 +30,12 @@ template '/etc/avahi/avahi-daemon.conf' do
   mode '0644'
 end
 
-template '/etc/default/dhcp-helper' do
-  owner 'root'
-  group 'root'
-  mode '0644'
+['dhcp-helper', 'parprouted'].each do |default_vars_file|
+  template "/etc/default/#{default_vars_file}" do
+    owner 'root'
+    group 'root'
+    mode '0644'
+  end
 end
 
 template '/etc/network/interfaces' do
@@ -50,7 +52,7 @@ template '/etc/network/interfaces.d/wireless-bridge-dhcp-parprouted' do
   mode '0644'
 end
 
-['setup', 'cleanup'].each do |script|
+['setup', 'cleanup', 'ip-clone'].each do |script|
   template "/etc/network/wireless-bridge-#{script}" do
     source "network/wireless-bridge-#{script}.erb"
     owner 'root'
