@@ -1,0 +1,69 @@
+#!/bin/bash
+
+## Designed for IFACE1=wlan0, IFACE2=eth0
+
+PARPROUTED_IFACE1=$1
+PARPROUTED_IFACE2=$2
+
+wlan0_ip=$(/sbin/ip addr show $PARPROUTED_IFACE2 | perl -wne 'm|^\s+inet (.*)/| && print $1')
+echo "IP: ${wlan0_ip}/32"
+
+# clone the dhcp-allocated IP to eth0 so dhcp-helper will relay for the correct subnet
+/sbin/ip addr add ${wlan0_ip}/32 dev $PARPROUTED_IFACE1
+
+echo "what is $PARPROUTED_IFACE1 IP state?"
+/sbin/ip addr show $PARPROUTED_IFACE1
+echo ""
+
+if /sbin/ip addr show $PARPROUTED_IFACE1 | grep -qE "169\.254\."; then
+  echo "DEBUG: what is eth0 + grep?"
+  /sbin/ip addr show $PARPROUTED_IFACE1
+  echo "DEBUG: grep output:"
+  /sbin/ip addr show $PARPROUTED_IFACE1 | grep -E "169\.254\."
+  result=$?
+  echo "DEBUG: grep result:"
+  echo $?
+  echo ""
+  echo "WARN: eth0 took zeroconf IP... Deleting..."
+  eth0_zeroconf_ip=$(/sbin/ip addr show $PARPROUTED_IFACE1 | perl -wne 'm|^\s+inet (169\.254\.\d+\.\d+)/| && print $1')
+  echo "ZEROCONF IP: ${eth0_zeroconf_ip}"
+  [ -n "$eth0_zeroconf_ip" ] && /sbin/ip addr del "${eth0_zeroconf_ip}" dev $PARPROUTED_IFACE1
+fi
+
+echo "RUNNING /sbin/ifup $PARPROUTED_IFACE1"
+/sbin/ifup $PARPROUTED_IFACE1
+
+# Check for zeroconf ip after iface comes up... if there delete it!
+# Retry for 5 seconds
+timeout=5
+t_end=$((SECONDS+timeout))
+time=$((SECONDS))
+until ! /sbin/ip addr show $PARPROUTED_IFACE1 | grep -qE "169\.254\." || [ $time -gt $t_end ]; do
+  echo "DEBUG: what is eth0 + grep?"
+  /sbin/ip addr show $PARPROUTED_IFACE1
+  echo "DEBUG: grep output:"
+  /sbin/ip addr show $PARPROUTED_IFACE1 | grep -qE "169\.254\."
+  result=$?
+  echo "DEBUG: grep result:"
+  echo $?
+  echo ""
+  echo "WARN: eth0 took zeroconf IP... Deleting..."
+  eth0_zeroconf_ip=$(/sbin/ip addr show $PARPROUTED_IFACE1 | perl -wne 'm|^\s+inet (169\.254\.\d+\.\d+)/| && print $1')
+  echo "ZEROCONF IP: ${eth0_zeroconf_ip}"
+  [ -n "$eth0_zeroconf_ip" ] && /sbin/ip addr del "${eth0_zeroconf_ip}" dev $PARPROUTED_IFACE1
+  time=$SECONDS
+done
+
+# Check for ip after iface comes up... if not there add it!
+# Retry for 5 seconds
+timeout=5
+t_end=$((SECONDS+timeout))
+time=$((SECONDS))
+until /sbin/ip addr show $PARPROUTED_IFACE1 | grep -q "${wlan0_ip}" || [ $time -gt $t_end ]; do
+  echo "WARN: $PARPROUTED_IFACE1 did not take IP address... Retrying..."
+  /sbin/ip addr add ${wlan0_ip}/32 dev $PARPROUTED_IFACE1
+  time=$SECONDS
+done
+
+/sbin/ip addr show $PARPROUTED_IFACE1 | grep -q "${wlan0_ip}/32"
+exit $?
