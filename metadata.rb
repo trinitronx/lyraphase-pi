@@ -10,4 +10,4 @@ source_url 'https://github.com/trinitronx/lyraphase-pi'
 
 
 supports 'debian'
-depends 'sysctl', '~> 0.8.0'
+depends 'sysctl', '~> 0.7.5'
