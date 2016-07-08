@@ -53,14 +53,16 @@ describe 'lyraphase-pi::wifi-bridge' do
       expect( chef_run ).to render_file(avahi_daemon_conf).with_content(File.open(test_fixture_filename, 'r').read)
     end
 
-    it 'installs /etc/default dhcp-helper vars' do
-      dhcp_helper_vars = '/etc/default/dhcp-helper'
-      test_fixture_filename = File.join( File.dirname(__FILE__), '..', '..', '..', 'test', 'fixtures', 'default', 'dhcp-helper')
-      expect( chef_run ).to create_template(dhcp_helper_vars).with_path(dhcp_helper_vars)
-        .with_owner('root')
-        .with_group('root')
-        .with_mode('0644')
-      expect( chef_run ).to render_file(dhcp_helper_vars).with_content(File.open(test_fixture_filename, 'r').read)
+    ['dhcp-helper', 'parprouted'].each do |default_vars_file|
+      it 'installs /etc/default dhcp-helper vars' do
+        default_vars_file_path = File.join('', 'etc', 'default', default_vars_file)
+        test_fixture_filename = File.join( File.dirname(__FILE__), '..', '..', '..', 'test', 'fixtures', 'default', default_vars_file)
+        expect( chef_run ).to create_template(default_vars_file_path).with_path(default_vars_file_path)
+          .with_owner('root')
+          .with_group('root')
+          .with_mode('0644')
+        expect( chef_run ).to render_file(default_vars_file_path).with_content(File.open(test_fixture_filename, 'r').read)
+      end
     end
 
     it 'installs /etc/network/interfaces' do
@@ -83,7 +85,7 @@ describe 'lyraphase-pi::wifi-bridge' do
       expect( chef_run ).to render_file(etc_network_interfaces_wireless_bridge).with_content(File.open(test_fixture_filename, 'r').read)
     end
 
-    ['setup', 'cleanup'].each do |script|
+    ['setup', 'cleanup', 'ip-clone'].each do |script|
       it "installs wireless-bridge-#{script} for ifup / ifdown" do
         script_file = "/etc/network/wireless-bridge-#{script}"
         test_fixture_filename = File.join( File.dirname(__FILE__), '..', '..', '..', 'test', 'fixtures', 'network', "wireless-bridge-#{script}")
