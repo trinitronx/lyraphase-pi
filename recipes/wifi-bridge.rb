@@ -61,6 +61,17 @@ end
   end
 end
 
+[ 'parprouted.service',
+  'wpa-cli-event-handler.service'
+  ].each do |systemd_svc|
+  template "/etc/systemd/system/#{systemd_svc}" do
+    source "systemd/#{systemd_svc}"
+    owner 'root'
+    group 'root'
+    mode '0755'
+  end
+end
+
 sysctl_param 'net.ipv4.ip_forward' do
   value 1
 end
