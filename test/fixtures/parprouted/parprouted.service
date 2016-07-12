@@ -20,9 +20,11 @@
 
 [Unit]
 Description=Proxy ARP IP bridging daemon
+BindsTo=sys-subsystem-net-devices-wlan0.device sys-subsystem-net-devices-eth0.device
+After=network-online.target sys-subsystem-net-devices-eth0.device sys-subsystem-net-devices-eth0.device wpa_supplicant.service
+Wants=network-online.target
 
 [Service]
-After=network.target wpa_supplicant.service
 Type=forking
 EnvironmentFile=/etc/default/parprouted
 #ExecStartPre=/sbin/ip addr add "$(/sbin/ip addr show $PARPROUTED_IFACE2 | perl -wne 'm|^\s+inet (.*)/| && print \$1')/32" dev $PARPROUTED_IFACE1
