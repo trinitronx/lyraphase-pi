@@ -104,7 +104,7 @@ describe 'lyraphase-pi::wifi-bridge' do
     ['parprouted.service', 'wpa-cli-event-handler.service'].each do |systemd_svc|
       it "installs SystemD service: #{systemd_svc}" do
         systemd_svc_file = File.join( '', 'etc', 'systemd', 'system', systemd_svc)
-        test_fixture_filename = File.join( File.dirname(__FILE__), '..', '..', '..', 'test', 'fixtures', 'systemd', systemd_svc)
+        test_fixture_filename = File.join( File.dirname(__FILE__), '..', '..', '..', 'test', 'fixtures', 'systemd', 'system', systemd_svc)
         expect( chef_run ).to create_template(systemd_svc_file)
           .with_path(systemd_svc_file)
           .with_owner('root')
