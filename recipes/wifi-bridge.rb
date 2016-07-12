@@ -45,6 +45,13 @@ template '/etc/network/interfaces' do
   mode '0644'
 end
 
+directory '/etc/network/interfaces.d' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
 template '/etc/network/interfaces.d/wireless-bridge-dhcp-parprouted' do
   source 'network/interfaces.d/wireless-bridge-dhcp-parprouted.erb'
   owner 'root'

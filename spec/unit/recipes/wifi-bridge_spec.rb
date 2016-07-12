@@ -88,6 +88,13 @@ describe 'lyraphase-pi::wifi-bridge' do
         .with_content(File.open(test_fixture_filename, 'r').read)
     end
 
+    it 'creates /etc/network/interfaces.d' do
+      expect(chef_run).to create_directory('/etc/network/interfaces.d')
+        .with_owner('root')
+        .with_group('root')
+        .with_mode('0755')
+    end
+
     it 'installs network config for dhcp' do
       etc_network_interfaces_wireless_bridge = '/etc/network/interfaces.d/wireless-bridge-dhcp-parprouted'
       test_fixture_filename = File.join(
