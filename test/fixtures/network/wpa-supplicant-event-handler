@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Handle WiFi CONNECTED event by resetting eth0 IP + restarting parprouted
+case "$2" in
+    CONNECTED)
+        /bin/bash /etc/network/wireless-bridge-setup
+        #notify-send "WPA supplicant: connection established";
+        ;;
+    DISCONNECTED)
+        #noop
+        :
+        #notify-send "WPA supplicant: connection lost";
+        ;;
+esac
+

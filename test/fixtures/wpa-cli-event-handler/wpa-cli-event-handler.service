@@ -1,0 +1,23 @@
+# /etc/systemd/system/wpa-cli-event-handler.service
+# This file is managed by Chef
+#
+# wpa_cli - wpa_supplicant CLI & event handler daemon
+#
+
+[Unit]
+Description=wpa_cli Event Handler Daemon
+BindsTo=sys-subsystem-net-devices-wlan0.device
+After=network-online.target sys-subsystem-net-devices-wlan0.device wpa_supplicant.service
+Wants=network-online.target
+
+[Service]
+Type=forking
+#EnvironmentFile=/etc/default/parprouted
+#ExecStartPre=/sbin/ip addr add "$(/sbin/ip addr show $PARPROUTED_IFACE2 | perl -wne 'm|^\s+inet (.*)/| && print \$1')/32" dev $PARPROUTED_IFACE1
+#ExecStartPre=/etc/network/wireless-bridge-ip-clone $PARPROUTED_IFACE1 $PARPROUTED_IFACE2
+ExecStart=/sbin/wpa_cli -B -a /etc/network/wpa-supplicant-event-handler
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
