@@ -72,7 +72,7 @@ end
     source "systemd/#{systemd_svc}"
     owner 'root'
     group 'root'
-    mode '0755'
+    mode '0644'
   end
 end
 
