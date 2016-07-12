@@ -93,6 +93,7 @@ module TestFixtureExtensions
     fixture_files.each do |src|
       absolute_path = Pathname.new(File.expand_path(src))
       src_relative_path = absolute_path.relative_path_from(Pathname.new(config[:kitchen_root]))
+      dest = File.join(sandbox_suites_dir, src_relative_path)
       FileUtils.mkdir_p(File.dirname(File.join(sandbox_suites_dir, src_relative_path)))
       FileUtils.cp(src, dest, preserve: true)
     end
