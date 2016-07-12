@@ -85,10 +85,10 @@ describe 'lyraphase-pi::wifi-bridge' do
       expect( chef_run ).to render_file(etc_network_interfaces_wireless_bridge).with_content(File.open(test_fixture_filename, 'r').read)
     end
 
-    ['setup', 'cleanup', 'ip-clone'].each do |script|
-      it "installs wireless-bridge-#{script} for ifup / ifdown" do
-        script_file = "/etc/network/wireless-bridge-#{script}"
-        test_fixture_filename = File.join( File.dirname(__FILE__), '..', '..', '..', 'test', 'fixtures', 'network', "wireless-bridge-#{script}")
+    ['wireless-bridge-setup', 'wireless-bridge-cleanup', 'wireless-bridge-ip-clone', 'wpa-supplicant-event-handler'].each do |script|
+      it "installs #{script} for ifup / ifdown" do
+        script_file = "/etc/network/#{script}"
+        test_fixture_filename = File.join( File.dirname(__FILE__), '..', '..', '..', 'test', 'fixtures', 'network', script)
         expect( chef_run ).to create_template(script_file).with_path(script_file)
           .with_owner('root')
           .with_group('root')

@@ -52,9 +52,13 @@ template '/etc/network/interfaces.d/wireless-bridge-dhcp-parprouted' do
   mode '0644'
 end
 
-['setup', 'cleanup', 'ip-clone'].each do |script|
-  template "/etc/network/wireless-bridge-#{script}" do
-    source "network/wireless-bridge-#{script}.erb"
+[ 'wireless-bridge-setup',
+  'wireless-bridge-cleanup',
+  'wireless-bridge-ip-clone',
+  'wpa-supplicant-event-handler'
+].each do |script|
+  template "/etc/network/#{script}" do
+    source "network/#{script}.erb"
     owner 'root'
     group 'root'
     mode '0755'
