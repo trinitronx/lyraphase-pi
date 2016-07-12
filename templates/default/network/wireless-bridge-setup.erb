@@ -1,19 +1,76 @@
 #!/bin/bash
 
 
-#set -x
+set -x
 
-#wlan0_ip=$(/sbin/ip addr show wlan0 | perl -wne 'm|^\s+inet (.*)/| && print $1')
-#echo "IP: ${wlan0_ip}/32"
+wlan0_ip=$(/sbin/ip addr show wlan0 | perl -wne 'm|^\s+inet (.*)/| && print $1')
+echo "IP: ${wlan0_ip}/32"
 
 # clone the dhcp-allocated IP to eth0 so dhcp-helper will relay for the correct subnet
-#echo "RUNNING: /sbin/ip addr add ${wlan0_ip}/32 dev eth0"
-#/sbin/ip addr add ${wlan0_ip}/32 dev eth0
+echo "RUNNING: /sbin/ip addr add ${wlan0_ip}/32 dev eth0"
+/sbin/ip addr add ${wlan0_ip}/32 dev eth0
 
-#echo "RUNNING: /usr/sbin/parprouted eth0 wlan0"
-#/usr/sbin/parprouted eth0 wlan0
+echo "what is eth0 IP state?"
+/sbin/ip addr show eth0
+echo ""
 
-#echo "RUNNING /sbin/ifup eth0"
-#/sbin/ifup eth0
+if /sbin/ip addr show eth0 | grep -qE "169\.254\."; then
+  echo "DEBUG: what is eth0 + grep?"
+  /sbin/ip addr show eth0
+  echo "DEBUG: grep output:"
+  /sbin/ip addr show eth0 | grep -E "169\.254\."
+  result=$?
+  echo "DEBUG: grep result:"
+  echo $?
+  echo ""
+  echo "WARN: eth0 took zeroconf IP... Deleting..."
+  eth0_zeroconf_ip=$(/sbin/ip addr show eth0 | perl -wne 'm|^\s+inet (169\.254\.\d+\.\d+)/| && print $1')
+  echo "ZEROCONF IP: ${eth0_zeroconf_ip}"
+  [ -n "$eth0_zeroconf_ip" ] && /sbin/ip addr del "${eth0_zeroconf_ip}" dev eth0
+fi
 
-exit 0
+echo "RUNNING /sbin/ifup eth0"
+/sbin/ifup eth0
+
+# Check for zeroconf ip after iface comes up... if there delete it!
+# Retry for 5 seconds
+timeout=5
+t_end=$((SECONDS+timeout))
+time=$((SECONDS))
+until ! /sbin/ip addr show eth0 | grep -qE "169\.254\." || [ $time -gt $t_end ]; do
+  echo "DEBUG: what is eth0 + grep?"
+  /sbin/ip addr show eth0
+  echo "DEBUG: grep output:"
+  /sbin/ip addr show eth0 | grep -qE "169\.254\."
+  result=$?
+  echo "DEBUG: grep result:"
+  echo $?
+  echo ""
+  echo "WARN: eth0 took zeroconf IP... Deleting..."
+  eth0_zeroconf_ip=$(/sbin/ip addr show eth0 | perl -wne 'm|^\s+inet (169\.254\.\d+\.\d+)/| && print $1')
+  echo "ZEROCONF IP: ${eth0_zeroconf_ip}"
+  [ -n "$eth0_zeroconf_ip" ] && /sbin/ip addr del "${eth0_zeroconf_ip}" dev eth0
+  time=$SECONDS
+done
+
+# Check for ip after iface comes up... if not there add it!
+# Retry for 5 seconds
+timeout=5
+t_end=$((SECONDS+timeout))
+time=$((SECONDS))
+until /sbin/ip addr show eth0 | grep -q "${wlan0_ip}" || [ $time -gt $t_end ]; do
+  echo "WARN: eth0 did not take IP address... Retrying..."
+  /sbin/ip addr add ${wlan0_ip}/32 dev eth0
+  time=$SECONDS
+done
+
+
+echo "RUNNING: /usr/sbin/parprouted eth0 wlan0"
+/usr/sbin/parprouted eth0 wlan0
+#/bin/systemctl start parprouted
+
+#if ! systemctl -q is-active dhcp-helper; then
+#  echo "RUNNING: systemctl start dhcp-helper"
+#  systemctl start dhcp-helper
+#fi
+
