@@ -1,5 +1,6 @@
 #!/usr/bin/env rake
 
+require 'bundler/setup'
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 # http://acrmp.github.com/foodcritic/
@@ -41,3 +42,27 @@ desc 'Run ChefSpec Unit Tests'
 RSpec::Core::RakeTask.new(:spec)
 # Alias for rake spec
 task chefspec: %i(spec)
+
+# Integration tests. Kitchen.ci
+namespace :integration do
+  desc 'Run Test Kitchen integration tests with Vagrant'
+  task :vagrant do
+    require 'kitchen'
+    Kitchen.logger = Kitchen.default_file_logger
+    Kitchen::Config.new.instances.each do |instance|
+      instance.test(:always)
+    end
+  end
+  desc 'Run Test Kitchen integration tests with kitchen-docker'
+  task :docker do
+    require 'kitchen'
+    Kitchen.logger = Kitchen.default_file_logger
+    @loader = Kitchen::Loader::YAML.new(local_config: '.kitchen.docker.yml')
+    Kitchen::Config.new(loader: @loader).instances.each do |instance|
+      instance.test(:always)
+    end
+  end
+end
+
+desc 'Run all tests on Travis'
+task travis: ['style', 'spec', 'integration:docker']

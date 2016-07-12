@@ -1,0 +1,7 @@
+---
+driver:
+  name: docker
+
+platforms:
+- name: debian-8.1
+- name: ubuntu-14.04

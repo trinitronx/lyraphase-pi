@@ -12,6 +12,7 @@ group :test do
   end
 
   group :integration do
+    gem 'berkshelf', '~> 4.3'
     gem 'test-kitchen', '~> 1.4'
     group :docker do
       gem 'kitchen-docker', '~> 2.3'
