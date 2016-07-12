@@ -18,7 +18,7 @@ describe 'lyraphase-pi::wifi-bridge' do
       'default/dhcp-helper',
       'network/interfaces',
       'network/interfaces.d/wireless-bridge-dhcp-parprouted' ].each do |etc_file_path|
-      fixture_path = File.join(File.dirname(__FILE__), '..', '..', '..', 'fixtures', etc_file_path.split('/') )
+      fixture_path = File.join(File.dirname(__FILE__), '..', 'fixtures', etc_file_path.split('/') )
       describe file(File.join('', 'etc', etc_file_path.split('/'))) do
         it { should be_file }
         its(:content) { should eq(File.open(fixture_path, 'r').read) }
