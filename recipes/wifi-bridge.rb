@@ -52,7 +52,7 @@ template '/etc/network/interfaces.d/wireless-bridge-dhcp-parprouted' do
   mode '0644'
 end
 
-[ 'wireless-bridge-setup',
+['wireless-bridge-setup',
   'wireless-bridge-cleanup',
   'wireless-bridge-ip-clone',
   'wpa-supplicant-event-handler'
@@ -65,9 +65,9 @@ end
   end
 end
 
-[ 'parprouted.service',
+['parprouted.service',
   'wpa-cli-event-handler.service'
-  ].each do |systemd_svc|
+].each do |systemd_svc|
   template "/etc/systemd/system/#{systemd_svc}" do
     source "systemd/#{systemd_svc}"
     owner 'root'

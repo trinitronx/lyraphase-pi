@@ -8,6 +8,5 @@ version '0.2.0'
 issues_url 'https://github.com/trinitronx/lyraphase-pi/issues'
 source_url 'https://github.com/trinitronx/lyraphase-pi'
 
-
 supports 'debian'
 depends 'sysctl', '~> 0.7'
