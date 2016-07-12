@@ -136,7 +136,7 @@ describe 'lyraphase-pi::wifi-bridge' do
           .with_path(systemd_svc_file)
           .with_owner('root')
           .with_group('root')
-          .with_mode('0755')
+          .with_mode('0644')
         expect(chef_run).to render_file(systemd_svc_file)
           .with_content(File.open(test_fixture_filename, 'r').read)
       end
