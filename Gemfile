@@ -20,6 +20,6 @@ group :test do
     # Use Aaron's Docker Ruby API patch to talk to docker running remotely
     # gem 'kitchen-docker', :github => 'adnichols/kitchen-docker', :branch => 'docker-ruby-api'
     # Not needed in Travis-CI
-    # gem "kitchen-vagrant"
+    gem 'kitchen-vagrant'
   end
 end
