@@ -53,10 +53,9 @@ template '/etc/network/interfaces.d/wireless-bridge-dhcp-parprouted' do
 end
 
 ['wireless-bridge-setup',
-  'wireless-bridge-cleanup',
-  'wireless-bridge-ip-clone',
-  'wpa-supplicant-event-handler'
-].each do |script|
+ 'wireless-bridge-cleanup',
+ 'wireless-bridge-ip-clone',
+ 'wpa-supplicant-event-handler'].each do |script|
   template "/etc/network/#{script}" do
     source "network/#{script}.erb"
     owner 'root'
@@ -66,8 +65,7 @@ end
 end
 
 ['parprouted.service',
-  'wpa-cli-event-handler.service'
-].each do |systemd_svc|
+ 'wpa-cli-event-handler.service'].each do |systemd_svc|
   template "/etc/systemd/system/#{systemd_svc}" do
     source "systemd/#{systemd_svc}"
     owner 'root'

@@ -5,7 +5,11 @@ require 'spec_helper'
 describe 'lyraphase-pi::wifi-bridge' do
   # Serverspec examples can be found at
   # http://serverspec.org/resource_types.html
-  ['parprouted', 'dhcp-helper', 'avahi-daemon'].each do |pkg|
+  [
+    'parprouted',
+    'dhcp-helper',
+    'avahi-daemon'
+  ].each do |pkg|
     describe 'installs Proxy ARP packages' do
       describe package(pkg) do
         it { should be_installed }
@@ -14,7 +18,8 @@ describe 'lyraphase-pi::wifi-bridge' do
   end
 
   describe 'installs Proxy ARP configuration' do
-    ['avahi/avahi-daemon.conf',
+    [
+      'avahi/avahi-daemon.conf',
       'default/dhcp-helper',
       'network/interfaces',
       'network/interfaces.d/wireless-bridge-dhcp-parprouted',
@@ -32,7 +37,8 @@ describe 'lyraphase-pi::wifi-bridge' do
     end
   end
 
-  ['network/wireless-bridge-setup',
+  [
+    'network/wireless-bridge-setup',
     'network/wireless-bridge-cleanup',
     'network/wireless-bridge-ip-clone',
     'network/wpa-supplicant-event-handler'

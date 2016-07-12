@@ -55,7 +55,10 @@ describe 'lyraphase-pi::wifi-bridge' do
       expect(chef_run).to render_file(avahi_daemon_conf).with_content(File.open(test_fixture_filename, 'r').read)
     end
 
-    ['dhcp-helper', 'parprouted'].each do |default_vars_file|
+    [
+      'dhcp-helper',
+      'parprouted'
+    ].each do |default_vars_file|
       it 'installs /etc/default dhcp-helper vars' do
         default_vars_file_path = File.join('', 'etc', 'default', default_vars_file)
         test_fixture_filename = File.join(
@@ -101,7 +104,8 @@ describe 'lyraphase-pi::wifi-bridge' do
         .with_content(File.open(test_fixture_filename, 'r').read)
     end
 
-    ['wireless-bridge-setup',
+    [
+      'wireless-bridge-setup',
       'wireless-bridge-cleanup',
       'wireless-bridge-ip-clone',
       'wpa-supplicant-event-handler'
@@ -126,7 +130,10 @@ describe 'lyraphase-pi::wifi-bridge' do
         .with(value: 1)
     end
 
-    ['parprouted.service', 'wpa-cli-event-handler.service'].each do |systemd_svc|
+    [
+      'parprouted.service',
+      'wpa-cli-event-handler.service'
+    ].each do |systemd_svc|
       it "installs SystemD service: #{systemd_svc}" do
         systemd_svc_file = File.join('', 'etc', 'systemd', 'system', systemd_svc)
         test_fixture_filename = File.join(
