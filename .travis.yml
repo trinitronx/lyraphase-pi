@@ -31,5 +31,5 @@ before_script:
 # - eval "$(chef shell-init $(basename $SHELL))"
 
 script:
-  - '[ "$TEST_TYPE" -eq "unit" ] && bundle exec rake travis || true'
-  - '[ "$TEST_TYPE" -eq "integration" ] && travis_retry bundle exec rake integration:docker[$KITCHEN_REGEXP] || true'
+  - '[[ "$TEST_TYPE" == "unit" ]] && bundle exec rake travis || true'
+  - '[[ "$TEST_TYPE" == "integration" ]] && travis_retry bundle exec rake integration:docker[$KITCHEN_REGEXP] || true'
