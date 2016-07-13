@@ -1,5 +1,23 @@
 CHANGELOG
 =========
+# v0.2.1
+
+- Major Unit & Integration Test Refactor:
+  - Added Test Fixtures Upload Helper for upload to Kitchen VM
+  - Added RuboCop & Configured it to be slightly less insanely OCD (based on [KentShikama/diaspora][diaspora-rubocop])
+  - Fixed `kitchen-docker` integration tests for Travis CI
+  - Run `kitchen-docker` containers via `privileged: true` for sysctl `/proc/sys` access to work
+  - Refactor Rake tasks to take a RegExp for `test-kitchen` Instance Matching
+  - Parallelize & Speed up Unit & Integration tests via ENV var Test Matrix
+  - Add Integration test case for sysctl setting `net.ipv4.ip_forward=1`
+  - Various Test Case Fixes
+- Fix RuboCop gripes
+- Fix SystemD `.service` file mode `0644`
+- Create `/etc/network/interfaces.d` directory if it does not exist
+- Added CHANGELOG
+- Added README
+
+[diaspora-rubocop]: https://github.com/KentShikama/diaspora/blob/8915530de12451b7b739e9122a7926b38da6514b/.rubocop.yml
 
 # v0.2.0
 
