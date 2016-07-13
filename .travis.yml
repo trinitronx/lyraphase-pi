@@ -7,23 +7,21 @@ rvm:
 
 sudo: false
 
-env:
-  global:
-  - PATH="/opt/chefdk/bin:/opt/chef/bin:/opt/chef/embedded/bin:/opt/chefdk/embedded/bin:$PATH"
+#env:
+#  global:
+#  - PATH="/opt/chefdk/bin:/opt/chef/bin:/opt/chef/embedded/bin:/opt/chefdk/embedded/bin:$PATH"
 
-addons:
-  apt:
-    sources:
-    - chef-stable-precise
-    packages:
-    - chefdk
+#addons:
+#  apt:
+#    sources:
+#    - chef-stable-precise
+#    packages:
+#    - chefdk
 
 before_script:
-  - eval "$(chef shell-init $(basename $SHELL))"
+- source <(curl -sL https://raw.githubusercontent.com/zuazo/kitchen-in-travis/0.5.0/scripts/start_docker.sh)
+# - eval "$(chef shell-init $(basename $SHELL))"
 
 script:
-  - rake berks
-  - rake knife
-  - rake foodcritic
-  - rake chefspec
+  - travis_retry bundle exec rake travis
 
