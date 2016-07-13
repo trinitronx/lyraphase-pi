@@ -1,5 +1,15 @@
+AllCops:
+  DisplayCopNames: true
+
 Rails:
   Enabled: false
+
+# Don't use Perl-ish / Ruby-ish Conventions that make things less readable & understandable
+Style/SymbolArray:
+  EnforcedStyle: brackets
+
+Style/WordArray:
+  EnforcedStyle: brackets
 
 # Commonly used screens these days easily fit more than 80 characters.
 Metrics/LineLength:
@@ -22,10 +32,6 @@ Metrics/AbcSize:
 # from a regular assignment.
 Style/SpaceAroundEqualsInParameterDefault:
   EnforcedStyle: no_space
-
-# We do not need to support Ruby 1.9, so this is good to use.
-Style/SymbolArray:
-  Enabled: true
 
 # Most readable form.
 Style/AlignHash:
