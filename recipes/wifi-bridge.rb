@@ -30,10 +30,12 @@ template '/etc/avahi/avahi-daemon.conf' do
   mode '0644'
 end
 
-template '/etc/default/dhcp-helper' do
-  owner 'root'
-  group 'root'
-  mode '0644'
+['dhcp-helper', 'parprouted'].each do |default_vars_file|
+  template "/etc/default/#{default_vars_file}" do
+    owner 'root'
+    group 'root'
+    mode '0644'
+  end
 end
 
 template '/etc/network/interfaces' do
@@ -43,6 +45,13 @@ template '/etc/network/interfaces' do
   mode '0644'
 end
 
+directory '/etc/network/interfaces.d' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
 template '/etc/network/interfaces.d/wireless-bridge-dhcp-parprouted' do
   source 'network/interfaces.d/wireless-bridge-dhcp-parprouted.erb'
   owner 'root'
@@ -50,12 +59,25 @@ template '/etc/network/interfaces.d/wireless-bridge-dhcp-parprouted' do
   mode '0644'
 end
 
-['setup', 'cleanup'].each do |script|
-  template "/etc/network/wireless-bridge-#{script}" do
-    source "network/wireless-bridge-#{script}.erb"
+['wireless-bridge-setup',
+ 'wireless-bridge-cleanup',
+ 'wireless-bridge-ip-clone',
+ 'wpa-supplicant-event-handler'].each do |script|
+  template "/etc/network/#{script}" do
+    source "network/#{script}.erb"
     owner 'root'
     group 'root'
     mode '0755'
+  end
+end
+
+['parprouted.service',
+ 'wpa-cli-event-handler.service'].each do |systemd_svc|
+  template "/etc/systemd/system/#{systemd_svc}" do
+    source "systemd/#{systemd_svc}"
+    owner 'root'
+    group 'root'
+    mode '0644'
   end
 end
 
