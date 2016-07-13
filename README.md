@@ -65,8 +65,9 @@ Recipe to Setup a [ProxyARP][2] WiFi Client Bridge on Raspberry Pi.
 
 # Author
 
-Author:: James Cuzella (@trinitronx)
+Author:: James Cuzella ([@trinitronx][keybase-id])
 
 [1]: https://supermarket.chef.io/cookbooks/sysctl
 [2]: https://wiki.debian.org/BridgeNetworkConnectionsProxyArp
 [pi-bootstrap]: https://github.com/trinitronx/raspbian_bootstrap
+[keybase-id]: https://gist.github.com/trinitronx/aee110cbdf55e67185dc44272784e694
