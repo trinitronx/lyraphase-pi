@@ -1,12 +1,20 @@
 language: ruby
 
 rvm:
-- 2.1
 - 2.2
 
 sudo: required
 #sudo: false
 
+env:
+  matrix:
+# Split up the test-kitchen run to avoid exceeding 50 minutes:
+# And speed things up by paralellizing test-kitchen platforms
+  - TEST_TYPE=integration KITCHEN_REGEXP=default-debian
+  - TEST_TYPE=integration KITCHEN_REGEXP=default-ubuntu
+  - TEST_TYPE=integration KITCHEN_REGEXP='(?<!default)-debian'
+  - TEST_TYPE=integration KITCHEN_REGEXP='(?<!default)-ubuntu'
+  - TEST_TYPE=unit
 #env:
 #  global:
 #  - PATH="/opt/chefdk/bin:/opt/chef/bin:/opt/chef/embedded/bin:/opt/chefdk/embedded/bin:$PATH"
@@ -23,5 +31,5 @@ before_script:
 # - eval "$(chef shell-init $(basename $SHELL))"
 
 script:
-  - travis_retry bundle exec rake travis
-
+  - '[ "$TEST_TYPE" -eq "unit" ] && bundle exec rake travis || true'
+  - '[ "$TEST_TYPE" -eq "integration" ] && travis_retry bundle exec rake integration:docker[$KITCHEN_REGEXP] || true'
