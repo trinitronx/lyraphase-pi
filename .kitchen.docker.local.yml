@@ -9,11 +9,12 @@ driver:
 ## driver_plugin: docker is for adnichols/kitchen-docker-api
 
 driver_config:
-  hostname: kitchen
+#  hostname: kitchen
 #  use_sudo: true
   socket: <%= ENV['DOCKER_HOST'] %>
   privileged: true
   cap_add:
+    - ALL
     - SYS_ADMIN
     - NET_ADMIN
     - NET_BIND_SERVICE
