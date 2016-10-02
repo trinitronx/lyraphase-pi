@@ -1,4 +1,10 @@
 # Default values for parprouted(8)
-PARPROUTED_IFACE1=eth0
-PARPROUTED_IFACE2=wlan0
-
+#PARPROUTED_IFACE1=eth0
+#PARPROUTED_IFACE2=wlan0
+<% @network_interfaces.keys.each_with_index do |iface, i| %>
+PARPROUTED_IFACE<%= i -%>=<%= iface  %>
+<% end %>
+#
+<% if @skip_wireless_ip_clone %>
+PARPROUTED_SKIP_IP_CLONE=true
+<% end %>
