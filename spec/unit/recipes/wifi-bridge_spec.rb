@@ -20,7 +20,8 @@
 require 'spec_helper'
 
 describe 'lyraphase-pi::wifi-bridge' do
-  context 'When all attributes are default, on an unspecified platform' do
+  # See spec/spec_helper.rb for platform, platform_version setting
+  context 'When all attributes are default, on Raspbian 8.0' do
     let(:packages) { ['parprouted', 'dhcp-helper', 'avahi-daemon'] }
 
     let(:chef_run) do
@@ -115,7 +116,8 @@ describe 'lyraphase-pi::wifi-bridge' do
       'wireless-bridge-setup',
       'wireless-bridge-cleanup',
       'wireless-bridge-ip-clone',
-      'wpa-supplicant-event-handler'
+      'wpa-supplicant-event-handler',
+      'parprouted-watchdog'
     ].each do |script|
       it "installs #{script} for ifup / ifdown" do
         script_file = "/etc/network/#{script}"
@@ -139,6 +141,7 @@ describe 'lyraphase-pi::wifi-bridge' do
 
     [
       'parprouted.service',
+      'parprouted-watchdog.service',
       'wpa-cli-event-handler.service'
     ].each do |systemd_svc|
       it "installs SystemD service: #{systemd_svc}" do
@@ -153,6 +156,29 @@ describe 'lyraphase-pi::wifi-bridge' do
           .with_mode('0644')
         expect(chef_run).to render_file(systemd_svc_file)
           .with_content(File.open(test_fixture_filename, 'r').read)
+      end
+      it 'notifies SystemD to run daemon-reload' do
+        expect(chef_run.template("/etc/systemd/system/#{systemd_svc}")).to notify('execute[systemctl daemon-reload]')
+      end
+      it "notifies SystemD service '#{systemd_svc}' to restart" do
+        expect(chef_run.template("/etc/systemd/system/#{systemd_svc}")).to notify("service[#{systemd_svc.chomp('.service')}]").to(:restart)
+      end
+    end
+
+    describe 'execute[systemctl daemon-reload]' do
+      it 'runs systemctl daemon-reload only on notification' do
+        expect(chef_run).to_not run_execute('systemctl daemon-reload')
+      end
+    end
+
+    [
+      'parprouted',
+      'parprouted-watchdog',
+      'wpa-cli-event-handler'
+    ].each do |service|
+      it "starts SystemD service: #{service}" do
+        expect(chef_run).to enable_service(service)
+        expect(chef_run).to start_service(service)
       end
     end
   end
