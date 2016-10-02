@@ -2,6 +2,8 @@
 # <% load "#{File.dirname(__FILE__)}/test/integration/helpers/test_fixture_upload_helper.rb" %>
 driver:
   name: vagrant
+  customize:
+    usb: "on"
 
 provisioner:
   name: chef_zero
