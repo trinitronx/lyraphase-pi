@@ -76,7 +76,7 @@ end
  'wireless-bridge-cleanup',
  'wireless-bridge-ip-clone',
  'wpa-supplicant-event-handler',
- 'parprouted-watchdog' ].each do |script|
+ 'parprouted-watchdog'].each do |script|
   template "/etc/network/#{script}" do
     source "network/#{script}.erb"
     owner 'root'
@@ -98,8 +98,8 @@ end
     owner 'root'
     group 'root'
     mode '0644'
-    notifies :run, "execute[systemctl daemon-reload]"
     variables(vars) if vars
+    notifies :run, 'execute[systemctl daemon-reload]'
     notifies :restart, "service[#{systemd_svc.chomp('.service')}]"
   end
 
@@ -108,8 +108,8 @@ end
   end
 end
 
-execute "systemctl daemon-reload" do
-  command "systemctl daemon-reload"
+execute 'systemctl daemon-reload' do
+  command 'systemctl daemon-reload'
   action :nothing
   # ignore_failure true
 end
