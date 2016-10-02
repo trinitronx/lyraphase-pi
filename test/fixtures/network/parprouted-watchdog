@@ -1,0 +1,15 @@
+#!/bin/bash
+
+echo "Starting parprouted.service watchdog"
+
+# Full error message we are looking for:
+# Sep 17 12:26:05 raspberrypi.hsd1.co.comcast.net parprouted[22654]: error: ioctl SIOCGIFADDR for eth0: Cannot assign requested address
+
+while true; do
+  if journalctl -x -n 1 -u parprouted.service --no-pager | grep -q 'SIOCGIFADDR'; then
+    echo "ERROR in parprouted.service detected! Restarting parprouted ..."
+    systemctl restart parprouted
+    [ $? -eq 0 ] && echo "parprouted.service Restart SUCCESS"
+  fi
+  sleep 10;
+done
