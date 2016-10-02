@@ -13,7 +13,7 @@ group :test do
   end
   group :unit do
     group :update_fauxhai do
-      gem 'fauxhai', '~> 3.0', github: 'customink/fauxhai', ref: 'df2cdcac2e7fd4371e85859de4815f3fcc17399c'
+      gem 'fauxhai', '~> 3.7', github: 'customink/fauxhai'
     end
     gem 'chefspec', '~> 4.6'
   end
