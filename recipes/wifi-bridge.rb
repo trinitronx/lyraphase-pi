@@ -35,10 +35,19 @@ template '/etc/avahi/avahi-daemon.conf' do
 end
 
 ['dhcp-helper', 'parprouted'].each do |default_vars_file|
+  if default_vars_file == 'parprouted'
+    vars = {'network_interfaces' => node['network']['interfaces'].to_hash}
+    vars['network_interfaces'].delete('lo')
+    vars.merge!(
+      node['lyraphase-pi']['wifi-bridge'][default_vars_file].to_hash
+    ) unless node['lyraphase-pi']['wifi-bridge'][default_vars_file].nil?
+  end
+
   template "/etc/default/#{default_vars_file}" do
     owner 'root'
     group 'root'
     mode '0644'
+    variables(vars) if vars
   end
 end
 
@@ -79,12 +88,18 @@ end
 ['parprouted.service',
  'parprouted-watchdog.service',
  'wpa-cli-event-handler.service'].each do |systemd_svc|
+  if systemd_svc == 'parprouted.service'
+    vars = {'network_interfaces' => node['network']['interfaces'].to_hash}
+    vars['network_interfaces'].delete('lo')
+  end
+
   template "/etc/systemd/system/#{systemd_svc}" do
     source "systemd/#{systemd_svc}"
     owner 'root'
     group 'root'
     mode '0644'
     notifies :run, "execute[systemctl daemon-reload]"
+    variables(vars) if vars
     notifies :restart, "service[#{systemd_svc.chomp('.service')}]"
   end
 
