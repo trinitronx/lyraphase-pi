@@ -88,7 +88,7 @@ end
 ['parprouted.service',
  'parprouted-watchdog.service',
  'wpa-cli-event-handler.service'].each do |systemd_svc|
-  if systemd_svc == 'parprouted.service'
+  if systemd_svc == 'parprouted.service' || systemd_svc == 'wpa-cli-event-handler.service'
     vars = {'network_interfaces' => node['network']['interfaces'].to_hash}
     vars['network_interfaces'].delete('lo')
   end
