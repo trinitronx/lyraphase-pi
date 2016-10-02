@@ -25,3 +25,7 @@ suites:
     run_list:
       - recipe[lyraphase-pi::wifi-bridge]
     attributes:
+      lyraphase-pi:
+        wifi-bridge:
+          parprouted:
+            skip_wireless_ip_clone: true
