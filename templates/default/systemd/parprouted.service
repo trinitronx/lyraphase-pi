@@ -20,7 +20,7 @@
 
 [Unit]
 Description=Proxy ARP IP bridging daemon
-BindsTo=<% @network_interfaces.keys.each do |iface| %>sys-subsystem-net-devices-<%= iface -%>.device <% end %>
+BindsTo=<%= @network_interfaces.keys.map { |iface| 'sys-subsystem-net-devices-' + iface.to_s + '.device' }.join(' ') %>
 After=network-online.target <% @network_interfaces.keys.each do |iface| %>sys-subsystem-net-devices-<%= iface -%>.device ifup@<%= iface -%>.service <% end %>dhcpcd.service wpa_supplicant.service
 Wants=network-online.target <% @network_interfaces.keys.each do |iface| %>ifup@<%= iface -%>.service <% end %>dhcpcd.service
 

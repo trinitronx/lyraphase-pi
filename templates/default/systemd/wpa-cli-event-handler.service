@@ -6,7 +6,7 @@
 
 [Unit]
 Description=wpa_cli Event Handler Daemon
-BindsTo=<% @network_interfaces.keys.grep(/wlan/).each do |iface| %>sys-subsystem-net-devices-<%= iface -%>.device <% end %>
+BindsTo=<%= @network_interfaces.keys.grep(/wlan/).map { |iface| 'sys-subsystem-net-devices-' + iface.to_s + '.device' }.join(' ') %>
 After=network-online.target <% @network_interfaces.keys.grep(/wlan/).each do |iface| %>sys-subsystem-net-devices-<%= iface -%>.device ifup@<%= iface -%>.service <% end %>wpa_supplicant.service dhcpcd.service
 Wants=network-online.target
 
