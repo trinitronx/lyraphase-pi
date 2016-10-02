@@ -104,6 +104,7 @@ end
   end
 
   service systemd_svc.chomp('.service') do
+    provider Chef::Provider::Service::Systemd
     action [:enable, :start]
   end
 end
