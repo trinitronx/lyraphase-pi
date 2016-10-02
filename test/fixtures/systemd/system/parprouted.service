@@ -20,9 +20,9 @@
 
 [Unit]
 Description=Proxy ARP IP bridging daemon
-BindsTo=sys-subsystem-net-devices-eth0.device
-After=network-online.target sys-subsystem-net-devices-eth0.device ifup@eth0.service dhcpcd.service wpa_supplicant.service
-Wants=network-online.target ifup@eth0.service dhcpcd.service
+BindsTo=sys-subsystem-net-devices-eth0.device sys-subsystem-net-devices-wlan0.device
+After=network-online.target sys-subsystem-net-devices-eth0.device ifup@eth0.service sys-subsystem-net-devices-wlan0.device ifup@wlan0.service dhcpcd.service wpa_supplicant.service
+Wants=network-online.target ifup@eth0.service ifup@wlan0.service dhcpcd.service
 
 [Service]
 Type=forking
@@ -35,3 +35,4 @@ RestartSec=3
 
 [Install]
 WantedBy=multi-user.target
+
