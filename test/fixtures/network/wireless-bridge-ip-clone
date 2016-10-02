@@ -5,6 +5,10 @@
 PARPROUTED_IFACE1=$1
 PARPROUTED_IFACE2=$2
 
+if [ -n $PARPROUTED_SKIP_IP_CLONE ]; then
+  exit 0
+fi
+
 wlan0_ip=$(/sbin/ip addr show $PARPROUTED_IFACE2 | perl -wne 'm|^\s+inet (.*)/| && print $1')
 echo "IP: ${wlan0_ip}/32"
 
