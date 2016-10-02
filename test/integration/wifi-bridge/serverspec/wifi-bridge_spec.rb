@@ -17,6 +17,12 @@ describe 'lyraphase-pi::wifi-bridge' do
     end
   end
 
+  describe 'Linux Kernel IPv4 Packet Forwarding' do
+    describe linux_kernel_parameter('net.ipv4.ip_forward') do
+      its(:value) { should eq 1 }
+    end
+  end
+
   describe 'creates /etc/network/interfaces.d' do
     describe file('/etc/network/interfaces.d/') do
       it { should be_directory }
@@ -33,6 +39,7 @@ describe 'lyraphase-pi::wifi-bridge' do
       'network/interfaces',
       'network/interfaces.d/wireless-bridge-dhcp-parprouted',
       'systemd/system/parprouted.service',
+      'systemd/system/parprouted-watchdog.service',
       'systemd/system/wpa-cli-event-handler.service'
     ].each do |etc_file_path|
       fixture_path = File.join(File.dirname(__FILE__), '..', 'test', 'fixtures', etc_file_path.split('/'))
@@ -43,6 +50,15 @@ describe 'lyraphase-pi::wifi-bridge' do
         it { should be_grouped_into 'root' }
         it { should be_mode '644' }
       end
+
+      if etc_file_path =~ /\.service$/
+        svc_name = File.basename(etc_file_path).chomp('.service')
+
+        describe service(svc_name) do
+          it { should be_enabled }
+          it { should be_running }
+        end
+      end
     end
   end
 
@@ -50,7 +66,8 @@ describe 'lyraphase-pi::wifi-bridge' do
     'network/wireless-bridge-setup',
     'network/wireless-bridge-cleanup',
     'network/wireless-bridge-ip-clone',
-    'network/wpa-supplicant-event-handler'
+    'network/wpa-supplicant-event-handler',
+    'parprouted-watchdog'
   ].each do |script|
     fixture_path = File.join(File.dirname(__FILE__), '..', 'test', 'fixtures', script.split('/'))
     describe "installs /etc/#{script} for ifup / ifdown" do
@@ -60,12 +77,6 @@ describe 'lyraphase-pi::wifi-bridge' do
         it { should be_mode '755' }
         its(:content) { should eq(File.open(fixture_path, 'r').read) }
       end
-    end
-  end
-
-  describe 'Linux Kernel IPv4 Packet Forwarding' do
-    describe linux_kernel_parameter('net.ipv4.ip_forward') do
-      its(:value) { should eq 1 }
     end
   end
 end

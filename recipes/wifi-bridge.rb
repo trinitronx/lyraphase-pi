@@ -23,6 +23,10 @@ node['lyraphase-pi']['wifi-bridge']['packages'].each do |pkg|
   package pkg
 end
 
+sysctl_param 'net.ipv4.ip_forward' do
+  value 1
+end
+
 template '/etc/avahi/avahi-daemon.conf' do
   source 'avahi/avahi-daemon.conf.erb'
   owner 'root'
@@ -62,7 +66,8 @@ end
 ['wireless-bridge-setup',
  'wireless-bridge-cleanup',
  'wireless-bridge-ip-clone',
- 'wpa-supplicant-event-handler'].each do |script|
+ 'wpa-supplicant-event-handler',
+ 'parprouted-watchdog' ].each do |script|
   template "/etc/network/#{script}" do
     source "network/#{script}.erb"
     owner 'root'
@@ -72,15 +77,24 @@ end
 end
 
 ['parprouted.service',
+ 'parprouted-watchdog.service',
  'wpa-cli-event-handler.service'].each do |systemd_svc|
   template "/etc/systemd/system/#{systemd_svc}" do
     source "systemd/#{systemd_svc}"
     owner 'root'
     group 'root'
     mode '0644'
+    notifies :run, "execute[systemctl daemon-reload]"
+    notifies :restart, "service[#{systemd_svc.chomp('.service')}]"
+  end
+
+  service systemd_svc.chomp('.service') do
+    action [:enable, :start]
   end
 end
 
-sysctl_param 'net.ipv4.ip_forward' do
-  value 1
+execute "systemctl daemon-reload" do
+  command "systemctl daemon-reload"
+  action :nothing
+  # ignore_failure true
 end
