@@ -43,6 +43,7 @@ Recipe to Setup a [ProxyARP][2] WiFi Client Bridge on Raspberry Pi.
     - `avahi-daemon`
   - Adds SystemD services for:
     - `parprouted`
+    - `parprouted-watchdog`
     - `wpa-cli-event-handler`
   - Adds `ifup` helper scripts to ensure network adapter state:
     - `wireless-bridge-setup`
@@ -55,7 +56,8 @@ Recipe to Setup a [ProxyARP][2] WiFi Client Bridge on Raspberry Pi.
     - `error: ioctl SIOCGIFADDR for eth0: Cannot assign requested address`
   - `parprouted` eventually crashes with error:
     - `parprouted.service: main process exited, code=killed, status=6/ABRT`
-  - Sometimes `parprouted` takes a while (~10min) before being restarted by SystemD
+  - **FIXED!** A new `parprouted-watchdog` service has been added to check for the above error every 10 seconds, and will restart `parprouted` if detected!
+  - ~~Sometimes `parprouted` takes a while (~10min) before being restarted by SystemD~~
 
  This recipe attempts to workaround stability issues with `parprouted` by making the WiFi bridge more fault-tolerant:
 
