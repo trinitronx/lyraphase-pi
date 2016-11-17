@@ -31,7 +31,7 @@ if /sbin/ip addr show $PARPROUTED_IFACE1 | grep -qE "169\.254\."; then
   echo "WARN: eth0 took zeroconf IP... Deleting..."
   eth0_zeroconf_ip=$(/sbin/ip addr show $PARPROUTED_IFACE1 | perl -wne 'm|^\s+inet (169\.254\.\d+\.\d+)/| && print $1')
   echo "ZEROCONF IP: ${eth0_zeroconf_ip}"
-  [ -n "$eth0_zeroconf_ip" ] && /sbin/ip addr del "${eth0_zeroconf_ip}" dev $PARPROUTED_IFACE1
+  [ -n "$eth0_zeroconf_ip" ] && /sbin/ip addr del "${eth0_zeroconf_ip}/32" dev $PARPROUTED_IFACE1
 fi
 
 echo "RUNNING /sbin/ifup $PARPROUTED_IFACE1"
@@ -54,7 +54,7 @@ until ! /sbin/ip addr show $PARPROUTED_IFACE1 | grep -qE "169\.254\." || [ $time
   echo "WARN: eth0 took zeroconf IP... Deleting..."
   eth0_zeroconf_ip=$(/sbin/ip addr show $PARPROUTED_IFACE1 | perl -wne 'm|^\s+inet (169\.254\.\d+\.\d+)/| && print $1')
   echo "ZEROCONF IP: ${eth0_zeroconf_ip}"
-  [ -n "$eth0_zeroconf_ip" ] && /sbin/ip addr del "${eth0_zeroconf_ip}" dev $PARPROUTED_IFACE1
+  [ -n "$eth0_zeroconf_ip" ] && /sbin/ip addr del "${eth0_zeroconf_ip}/32" dev $PARPROUTED_IFACE1
   time=$SECONDS
 done
 
