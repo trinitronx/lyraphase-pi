@@ -4,7 +4,7 @@ maintainer_email 'james.cuzella@lyraphase.com'
 license 'gplv3'
 description 'Installs/Configures lyraphase-pi'
 long_description 'Installs/Configures lyraphase-pi'
-version '0.3.3'
+version '0.3.4'
 issues_url 'https://github.com/trinitronx/lyraphase-pi/issues'
 source_url 'https://github.com/trinitronx/lyraphase-pi'
 
