@@ -20,6 +20,17 @@ Style/RegexpLiteral:
 Metrics/LineLength:
   Max: 120
 
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/*.rb'
+    - 'spec/**/*.rb'
+    - 'spec/**/**/*.rb'
+    - 'test/*.rb'
+    - 'test/**/*.rb'
+    - 'test/**/**/*.rb'
+    - 'test/**/**/**/*.rb'
+
+
 # Too short methods lead to extraction of single-use methods, which can make
 # the code easier to read (by naming things), but can also clutter the class
 Metrics/MethodLength:
@@ -125,6 +136,10 @@ Style/Lambda:
 # value to a local variable for those cases.
 Style/MethodCalledOnDoEndBlock:
   Enabled: true
+  Exclude:
+   - 'spec/*.rb'
+   - 'spec/**/*.rb'
+   - 'spec/**/**/*.rb'
 
 # Enforcing the names of variables? To single letter ones? Just no.
 Style/SingleLineBlockParams:
