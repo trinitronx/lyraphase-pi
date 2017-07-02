@@ -27,7 +27,7 @@ Wants=network-online.target ifup@eth0.service ifup@wlan0.service dhcpcd.service
 [Service]
 Type=forking
 EnvironmentFile=/etc/default/parprouted
-#ExecStartPre=/sbin/ip addr add "$(/sbin/ip addr show $PARPROUTED_IFACE1 | perl -wne 'm|^\s+inet (.*)/| && print \$1')/32" dev $PARPROUTED_IFACE0
+#ExecStartPre=/sbin/ip addr add "$(/sbin/ip addr show $PARPROUTED_IFACE1 | perl -wne 'm|^\s+inet (.*)/| && print \$1')" dev $PARPROUTED_IFACE0
 ExecStartPre=/etc/network/wireless-bridge-ip-clone $PARPROUTED_IFACE0 $PARPROUTED_IFACE1
 ExecStart=/usr/sbin/parprouted $PARPROUTED_IFACE0 $PARPROUTED_IFACE1
 Restart=always
