@@ -7,9 +7,9 @@ group :test do
   gem 'rake'
 
   group :style do
+    gem 'chef', '~> 13.1'
     gem 'foodcritic', '~> 11.2'
     gem 'rubocop', '~> 0.37'
-    gem 'chef', '~> 13.1'
   end
   group :unit do
     group :update_fauxhai do
@@ -34,11 +34,11 @@ end
 group :development do
   #  gem 'ruby_gntp'
   gem 'growl'
-  gem 'rb-fsevent'
   gem 'guard', '~> 2.14'
-  gem 'guard-kitchen'
   gem 'guard-foodcritic', '~> 3.0'
+  gem 'guard-kitchen'
   gem 'guard-rspec'
   gem 'guard-rubocop'
+  gem 'rb-fsevent'
   #  gem 'mixlib-versioning'
 end

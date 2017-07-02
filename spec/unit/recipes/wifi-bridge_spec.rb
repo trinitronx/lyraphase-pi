@@ -25,27 +25,27 @@ describe 'lyraphase-pi::wifi-bridge' do
     let(:packages) { ['parprouted', 'dhcp-helper', 'avahi-daemon'] }
 
     let(:chef_run) do
-      runner = ChefSpec::ServerRunner.new do |node|
+      ChefSpec::ServerRunner.new do |node|
         node.normal['network']['interfaces'] = {
-          "eth0": {
+          "eth0":  {
             "addresses": {
               "10.0.0.2": {
-                "broadcast": "10.0.0.255",
-                "family": "inet",
-                "netmask": "255.255.255.0",
-                "prefixlen": "24",
-                "scope": "Global"
+                "broadcast": '10.0.0.255',
+                "family":    'inet',
+                "netmask":   '255.255.255.0',
+                "prefixlen": '24',
+                "scope":     'Global'
               }
             }
           },
           "wlan0": {
             "addresses": {
               "10.0.0.3": {
-                "broadcast": "10.0.0.255",
-                "family": "inet",
-                "netmask": "255.255.255.0",
-                "prefixlen": "24",
-                "scope": "Global"
+                "broadcast": '10.0.0.255',
+                "family":    'inet',
+                "netmask":   '255.255.255.0',
+                "prefixlen": '24',
+                "scope":     'Global'
               }
             }
           }
@@ -185,7 +185,9 @@ describe 'lyraphase-pi::wifi-bridge' do
         expect(chef_run.template("/etc/systemd/system/#{systemd_svc}")).to notify('execute[systemctl daemon-reload]')
       end
       it "notifies SystemD service '#{systemd_svc}' to restart" do
-        expect(chef_run.template("/etc/systemd/system/#{systemd_svc}")).to notify("service[#{systemd_svc.chomp('.service')}]").to(:restart)
+        expect(
+          chef_run.template("/etc/systemd/system/#{systemd_svc}")
+        ).to notify("service[#{systemd_svc.chomp('.service')}]").to(:restart)
       end
     end
 
