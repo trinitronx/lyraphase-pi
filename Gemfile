@@ -1,28 +1,28 @@
 # Gemfile
 source 'https://rubygems.org'
 
-ruby '2.2.3'
+ruby '2.4.0'
 
 group :test do
   gem 'rake'
 
   group :style do
-    gem 'foodcritic', '~> 6.1'
+    gem 'foodcritic', '~> 11.2'
     gem 'rubocop', '~> 0.37'
-    # gem 'chef', '~> 12.5'
+    gem 'chef', '~> 13.1'
   end
   group :unit do
     group :update_fauxhai do
-      gem 'fauxhai', '~> 3.7', github: 'customink/fauxhai'
+      gem 'fauxhai', '~> 5.0', github: 'customink/fauxhai'
     end
-    gem 'chefspec', '~> 4.6'
+    gem 'chefspec', '~> 7.0'
   end
 
   group :integration do
-    gem 'berkshelf', '~> 4.3'
-    gem 'test-kitchen', '~> 1.4'
+    gem 'berkshelf', '~> 6.0'
+    gem 'test-kitchen', '~> 1.16'
     group :docker do
-      gem 'kitchen-docker', '~> 2.3'
+      gem 'kitchen-docker', '~> 2.6'
     end
     # Use Aaron's Docker Ruby API patch to talk to docker running remotely
     # gem 'kitchen-docker', :github => 'adnichols/kitchen-docker', :branch => 'docker-ruby-api'
@@ -37,7 +37,7 @@ group :development do
   gem 'rb-fsevent'
   gem 'guard', '~> 2.14'
   gem 'guard-kitchen'
-  gem 'guard-foodcritic', '~> 2.1'
+  gem 'guard-foodcritic', '~> 3.0'
   gem 'guard-rspec'
   gem 'guard-rubocop'
   #  gem 'mixlib-versioning'
