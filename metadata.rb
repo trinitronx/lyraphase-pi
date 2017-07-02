@@ -1,7 +1,7 @@
 name 'lyraphase-pi'
 maintainer 'James Cuzella'
 maintainer_email 'james.cuzella@lyraphase.com'
-license 'gplv3'
+license 'GPL-3.0'
 description 'Installs/Configures lyraphase-pi'
 long_description 'Installs/Configures lyraphase-pi'
 version '0.3.4'
