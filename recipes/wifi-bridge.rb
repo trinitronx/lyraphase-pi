@@ -38,9 +38,11 @@ end
   if default_vars_file == 'parprouted'
     vars = {'network_interfaces' => node['network']['interfaces'].to_hash}
     vars['network_interfaces'].delete('lo')
-    vars.merge!(
-      node['lyraphase-pi']['wifi-bridge'][default_vars_file].to_hash
-    ) unless node['lyraphase-pi']['wifi-bridge'][default_vars_file].nil?
+    unless node['lyraphase-pi']['wifi-bridge'][default_vars_file].nil?
+      vars.merge!(
+        node['lyraphase-pi']['wifi-bridge'][default_vars_file].to_hash
+      )
+    end
   end
 
   template "/etc/default/#{default_vars_file}" do
@@ -88,7 +90,7 @@ end
 ['parprouted.service',
  'parprouted-watchdog.service',
  'wpa-cli-event-handler.service'].each do |systemd_svc|
-  if systemd_svc == 'parprouted.service' || systemd_svc == 'wpa-cli-event-handler.service'
+  if ['parprouted.service', 'wpa-cli-event-handler.service'].include?(systemd_svc)
     vars = {'network_interfaces' => node['network']['interfaces'].to_hash}
     vars['network_interfaces'].delete('lo')
   end

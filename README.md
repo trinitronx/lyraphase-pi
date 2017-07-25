@@ -8,7 +8,72 @@ A cookbook with various recipes for Raspberry Pi
 
 # Requirements
 
- - [sysctl][1] cookbook
+ - [sysctl][1] cookbook (`>=0.7.0` for Chef `<= 12`; `>= 0.9.0` for Chef `>= 13`)
+
+**Note:** With version mismatch of Chef & `compat_resource` cookbooks, you may get errors during provisioning such as [this one](https://gist.github.com/c681ed0b74e96d5067fc61afd840fdfa):
+
+<details><summary><code>uninitialized constant Chef::Provider::LWRPBase::InlineResources</code> (expand to see more...)</summary><p>
+
+```
+Starting Chef Client, version 13.1.31
+Creating a new client identity for wifi-bridge-debian-81 using the validator key.
+resolving cookbooks for run list: ["lyraphase-pi::wifi-bridge"]
+Synchronizing Cookbooks:
+  - lyraphase-pi (0.3.4)
+  - ohai (4.1.1)
+  - sysctl (0.8.0)
+  - compat_resource (12.10.6)
+Installing Cookbook Gems:
+Compiling Cookbooks...
+
+================================================================================
+Recipe Compile Error in /tmp/kitchen/cache/cookbooks/compat_resource/libraries/autoload.rb
+================================================================================
+
+NameError
+---------
+uninitialized constant Chef::Provider::LWRPBase::InlineResources
+
+Cookbook Trace:
+---------------
+/tmp/kitchen/cache/cookbooks/compat_resource/files/lib/chef_compat/monkeypatches/chef/provider.rb:6:in `<class:Provider>'
+/tmp/kitchen/cache/cookbooks/compat_resource/files/lib/chef_compat/monkeypatches/chef/provider.rb:4:in `<top (required)>'
+/tmp/kitchen/cache/cookbooks/compat_resource/files/lib/chef_compat/monkeypatches.rb:6:in `<top (required)>'
+/tmp/kitchen/cache/cookbooks/compat_resource/files/lib/chef_compat/resource.rb:1:in `<top (required)>'
+/tmp/kitchen/cache/cookbooks/compat_resource/files/lib/compat_resource.rb:7:in `<top (required)>'
+/tmp/kitchen/cache/cookbooks/compat_resource/libraries/autoload.rb:24:in `<top (required)>'
+
+Relevant File Content:
+----------------------
+/tmp/kitchen/cache/cookbooks/compat_resource/files/lib/chef_compat/monkeypatches/chef/provider.rb:
+
+1:  require 'chef/provider'
+2:  require 'chef/provider/lwrp_base'
+3:
+4:  class Chef::Provider
+5:    if !defined?(InlineResources)
+6>>     InlineResources = Chef::Provider::LWRPBase::InlineResources
+7:    end
+8:    module InlineResources
+9:      require 'chef/dsl/recipe'
+10:      require 'chef/dsl/platform_introspection'
+11:      require 'chef/dsl/data_query'
+12:      require 'chef/dsl/include_recipe'
+13:      include Chef::DSL::Recipe
+14:      include Chef::DSL::PlatformIntrospection
+15:      include Chef::DSL::DataQuery
+
+System Info:
+------------
+  chef_version=13.1.31
+  platform=debian
+  platform_version=8.1
+  ruby=ruby 2.4.1p111 (2017-03-22 revision 58053) [x86_64-linux]
+  program_name=chef-client worker: ppid=91;start=18:01:33;
+  executable=/opt/chef/bin/chef-client
+```
+</p></details>
+
 
 # Usage
 

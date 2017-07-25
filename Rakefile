@@ -6,7 +6,7 @@ require 'rubocop/rake_task'
 # http://acrmp.github.com/foodcritic/
 require 'foodcritic'
 
-task default: %i(style spec)
+task default: [:style, :spec]
 task test: [:default]
 
 # Style tests. Knife, Rubocop and Foodcritic
@@ -41,7 +41,7 @@ end
 desc 'Run ChefSpec Unit Tests'
 RSpec::Core::RakeTask.new(:spec)
 # Alias for rake spec
-task chefspec: %i(spec)
+task chefspec: [:spec]
 
 # Integration tests. Kitchen.ci
 namespace :integration do

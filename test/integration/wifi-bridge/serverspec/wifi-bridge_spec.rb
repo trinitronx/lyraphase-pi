@@ -51,13 +51,12 @@ describe 'lyraphase-pi::wifi-bridge' do
         it { should be_mode '644' }
       end
 
-      if etc_file_path =~ /\.service$/
-        svc_name = File.basename(etc_file_path).chomp('.service')
+      next unless etc_file_path =~ /\.service$/
+      svc_name = File.basename(etc_file_path).chomp('.service')
 
-        describe service(svc_name) do
-          it { should be_enabled }
-          it { should be_running }
-        end
+      describe service(svc_name) do
+        it { should be_enabled }
+        it { should be_running }
       end
     end
   end

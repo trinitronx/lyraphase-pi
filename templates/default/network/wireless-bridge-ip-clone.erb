@@ -10,10 +10,10 @@ if [ -n "$PARPROUTED_SKIP_IP_CLONE" ]; then
 fi
 
 wlan0_ip=$(/sbin/ip addr show $PARPROUTED_IFACE2 | perl -wne 'm|^\s+inet (.*)/| && print $1')
-echo "IP: ${wlan0_ip}/32"
+echo "IP: ${wlan0_ip}"
 
 # clone the dhcp-allocated IP to eth0 so dhcp-helper will relay for the correct subnet
-/sbin/ip addr add ${wlan0_ip}/32 dev $PARPROUTED_IFACE1
+/sbin/ip addr add ${wlan0_ip} dev $PARPROUTED_IFACE1
 
 echo "what is $PARPROUTED_IFACE1 IP state?"
 /sbin/ip addr show $PARPROUTED_IFACE1
@@ -65,9 +65,9 @@ t_end=$((SECONDS+timeout))
 time=$((SECONDS))
 until /sbin/ip addr show $PARPROUTED_IFACE1 | grep -q "${wlan0_ip}" || [ $time -gt $t_end ]; do
   echo "WARN: $PARPROUTED_IFACE1 did not take IP address... Retrying..."
-  /sbin/ip addr add ${wlan0_ip}/32 dev $PARPROUTED_IFACE1
+  /sbin/ip addr add ${wlan0_ip} dev $PARPROUTED_IFACE1
   time=$SECONDS
 done
 
-/sbin/ip addr show $PARPROUTED_IFACE1 | grep -q "${wlan0_ip}/32"
+/sbin/ip addr show $PARPROUTED_IFACE1 | grep -q "${wlan0_ip}"
 exit $?

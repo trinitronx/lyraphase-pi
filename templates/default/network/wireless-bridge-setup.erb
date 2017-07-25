@@ -4,11 +4,11 @@
 set -x
 
 wlan0_ip=$(/sbin/ip addr show wlan0 | perl -wne 'm|^\s+inet (.*)/| && print $1')
-echo "IP: ${wlan0_ip}/32"
+echo "IP: ${wlan0_ip}"
 
 # clone the dhcp-allocated IP to eth0 so dhcp-helper will relay for the correct subnet
-echo "RUNNING: /sbin/ip addr add ${wlan0_ip}/32 dev eth0"
-/sbin/ip addr add ${wlan0_ip}/32 dev eth0
+echo "RUNNING: /sbin/ip addr add ${wlan0_ip} dev eth0"
+/sbin/ip addr add ${wlan0_ip} dev eth0
 
 echo "what is eth0 IP state?"
 /sbin/ip addr show eth0
@@ -60,7 +60,7 @@ t_end=$((SECONDS+timeout))
 time=$((SECONDS))
 until /sbin/ip addr show eth0 | grep -q "${wlan0_ip}" || [ $time -gt $t_end ]; do
   echo "WARN: eth0 did not take IP address... Retrying..."
-  /sbin/ip addr add ${wlan0_ip}/32 dev eth0
+  /sbin/ip addr add ${wlan0_ip} dev eth0
   time=$SECONDS
 done
 
