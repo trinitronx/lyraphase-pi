@@ -136,6 +136,20 @@ describe 'lyraphase-pi::wifi-bridge' do
         .with_content(File.open(test_fixture_filename, 'r').read)
     end
 
+    it 'creates /etc/tmpfiles.d' do
+      expect(chef_run).to create_directory('/etc/tmpfiles.d')
+        .with_owner('root')
+        .with_group('root')
+        .with_mode('0755')
+    end
+
+    it 'creates tmpfiles.d config for /run/wpa_supplicant socket directory' do
+      expect(chef_run).to render_file('/etc/tmpfiles.d/wpa_supplicant.conf')
+        .with_owner('root')
+        .with_group('root')
+        .with_mode('0644')
+    end
+
     [
       'wireless-bridge-setup',
       'wireless-bridge-cleanup',

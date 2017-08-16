@@ -74,6 +74,22 @@ template '/etc/network/interfaces.d/wireless-bridge-dhcp-parprouted' do
   mode '0644'
 end
 
+directory '/etc/tmpfiles.d' do
+  owner 'root'
+  group 'root'
+  mode '0755'
+  action :create
+end
+
+template '/etc/tmpfiles.d/wpa_supplicant.conf' do
+  source 'tmpfiles.d/wpa_supplicant.conf.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+  notifies :run, 'execute[systemd-tmpfiles create]'
+  notifies :restart, "service[wpa_supplicant]"
+end
+
 ['wireless-bridge-setup',
  'wireless-bridge-cleanup',
  'wireless-bridge-ip-clone',
@@ -115,4 +131,15 @@ execute 'systemctl daemon-reload' do
   command 'systemctl daemon-reload'
   action :nothing
   # ignore_failure true
+end
+
+execute 'systemd-tmpfiles create' do
+  command 'systemd-tmpfiles --create --exclude-prefix=/dev'
+  action :nothing
+  # ignore_failure true
+end
+
+service 'wpa_supplicant' do
+  provider Chef::Provider::Service::Systemd
+  action [:enable, :start]
 end
