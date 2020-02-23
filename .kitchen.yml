@@ -2,8 +2,51 @@
 # <% load "#{File.dirname(__FILE__)}/test/integration/helpers/test_fixture_upload_helper.rb" %>
 driver:
   name: vagrant
+  vagrantfile_erb: "test/integration/helpers/kitchen-vagrant/templates/Vagrantfile.erb"
   customize:
     usb: "on"
+    usbehci: "on"
+#    usbfilter: ["add", "0", "--target", ":id", "--name", "Ralink 802.11 bg WLAN [0001]", "--action", "hold", "--active", "yes", "--vendorid", "0x148f", "--productid", "0x2573", "--revision", "0001", "--manufacturer", "Ralink", "--product", "802.11 bg WLAN", "--remote", "no"]
+    usbfilter: 
+      - add:
+          name: "Ralink 802.11 bg WLAN [0001]"
+          action: "hold"
+          active: "yes"
+          vendorid: "0x148f"
+          productid: "0x2573"
+          revision: "0001"
+          manufacturer: "Ralink"
+          product: "802.11 bg WLAN"
+          remote: "no"
+
+# TODO: Install ralink firmware via:
+# deb http://mirrors.kernel.org/debian/ jessie main contrib non-free
+# Install network-manager
+# Figure out how to get it to connect via USB ralink device
+# TODO: Somehow get NetworkManager + WPA Supplicant to connect
+# /etc/NetworkManager/?connections?/resin-wifi
+# [connection]
+# id=resin-sample
+# type=wifi
+# 
+# [wifi]
+# hidden=true
+# mode=infrastructure
+# ssid=Vega
+# 
+# [wifi-security]
+# auth-alg=open
+# key-mgmt=wpa-psk
+# psk=7EEdEWS5wRd5qXPggSBQSyBTFba7ZMNUPxTnw
+# 
+# [ipv4]
+# method=auto
+# 
+# [ipv6]
+# addr-gen-mode=stable-privacy
+# method=auto
+# 
+#
 
 provisioner:
   name: chef_zero
