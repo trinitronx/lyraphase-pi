@@ -36,7 +36,7 @@ end
 group :development do
   #  gem 'ruby_gntp'
   gem 'growl'
-  gem 'guard', '~> 2.14'
+  gem 'guard', '~> 2.16'
   gem 'guard-foodcritic', '~> 3.0'
   gem 'guard-kitchen'
   gem 'guard-rspec'
