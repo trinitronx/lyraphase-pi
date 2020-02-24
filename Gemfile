@@ -13,7 +13,7 @@ group :test do
   end
   group :unit do
     group :update_fauxhai do
-      gem 'fauxhai', '~> 5.0', github: 'customink/fauxhai'
+      gem 'fauxhai-ng', '~> 7.6', github: 'customink/fauxhai'
     end
     gem 'chefspec', '~> 7.0'
   end
