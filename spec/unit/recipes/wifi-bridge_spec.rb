@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 #
 # Cookbook Name:: lyraphase-pi
 # Spec:: wifi-bridge
@@ -160,7 +162,7 @@ describe 'lyraphase-pi::wifi-bridge' do
 
     it 'installs network config for dhcp' do
       expect(chef_run).to apply_sysctl_param('net.ipv4.ip_forward')
-        .with(value: 1)
+        .with(value: '1')
     end
 
     [

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 # require 'kitchen/driver/ssh_base'
 # require 'kitchen/ssh'

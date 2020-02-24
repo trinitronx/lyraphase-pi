@@ -1,4 +1,5 @@
 #!/usr/bin/env rake
+# frozen_string_literal: true
 
 require 'bundler/setup'
 require 'rspec/core/rake_task'
@@ -23,7 +24,7 @@ namespace :style do
 
   desc 'Run Chef style checks'
   FoodCritic::Rake::LintTask.new(:chef) do |t|
-    t.options = {fail_tags: ['correctness'], tags: ['~FC023'], context: true}
+    t.options = {fail_tags: ['correctness'], tags: ['~FC023', '~FC121'], context: true}
   end
 end
 
@@ -54,6 +55,7 @@ namespace :integration do
   def kitchen_instances(regexp, config)
     instances = Kitchen::Config.new(config).instances
     return instances if regexp.nil? || regexp == 'all'
+
     instances.get_all(Regexp.new(regexp))
   end
 
