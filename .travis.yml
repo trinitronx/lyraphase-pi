@@ -37,3 +37,6 @@ before_script:
 script:
   - '[[ "$TEST_TYPE" == "unit" ]] && bundle exec rake travis || true'
   - '[[ "$TEST_TYPE" == "integration" ]] && travis_retry bundle exec rake integration:docker[$KITCHEN_REGEXP] || true'
+after_script:
+  - '[[ "$TEST_TYPE" == "integration" ]] && echo "---------------- DOCKER CONTAINER LOGS ----------------"'
+  - '[[ "$TEST_TYPE" == "integration" ]] && for c in $(docker ps -aq) ; do sudo docker exec -ti $c /bin/journalctl --no-pager ; done'
