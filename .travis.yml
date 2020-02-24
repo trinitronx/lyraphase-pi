@@ -36,4 +36,4 @@ before_script:
 
 script:
   - '[[ "$TEST_TYPE" == "unit" ]] && bundle exec rake travis || true'
-  - '[[ "$TEST_TYPE" == "integration" ]] && travis_retry bundle exec rake integration:docker[$KITCHEN_REGEXP] || true'
+  - '[[ "$TEST_TYPE" == "integration" ]] && travis_retry travis_wait bundle exec rake integration:docker[$KITCHEN_REGEXP] || true'
