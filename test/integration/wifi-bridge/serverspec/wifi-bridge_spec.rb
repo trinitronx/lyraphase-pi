@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 # cookbook_name = 'lyraphase-pi'
@@ -52,6 +54,7 @@ describe 'lyraphase-pi::wifi-bridge' do
       end
 
       next unless etc_file_path =~ /\.service$/
+
       svc_name = File.basename(etc_file_path).chomp('.service')
 
       describe service(svc_name) do

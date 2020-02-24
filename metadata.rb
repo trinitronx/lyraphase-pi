@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 name 'lyraphase-pi'
 maintainer 'James Cuzella'
 maintainer_email 'james.cuzella@lyraphase.com'

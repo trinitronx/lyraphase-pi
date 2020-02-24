@@ -1,4 +1,5 @@
 #!/usr/bin/env rake
+# frozen_string_literal: true
 
 require 'bundler/setup'
 require 'rspec/core/rake_task'
@@ -54,6 +55,7 @@ namespace :integration do
   def kitchen_instances(regexp, config)
     instances = Kitchen::Config.new(config).instances
     return instances if regexp.nil? || regexp == 'all'
+
     instances.get_all(Regexp.new(regexp))
   end
 

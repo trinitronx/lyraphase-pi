@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Gemfile
 source 'https://rubygems.org'
 
@@ -8,8 +10,8 @@ group :test do
 
   group :style do
     gem 'chef', '~> 13.1'
-    gem 'foodcritic', '~> 11.2'
-    gem "rubocop", ">= 0.49.0"
+    gem 'foodcritic', '~> 16.2'
+    gem 'rubocop', '>= 0.49.0'
   end
   group :unit do
     group :update_fauxhai do

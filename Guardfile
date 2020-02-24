@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # More info at https://github.com/guard/guard#readme
 
 guard 'foodcritic', cookbook_paths: '.', cli: '-t ~FC023 -t ~FC005', all_on_start: false do
