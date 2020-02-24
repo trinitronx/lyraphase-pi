@@ -24,7 +24,7 @@ require 'spec_helper'
 describe 'lyraphase-pi::wifi-bridge' do
   # See spec/spec_helper.rb for platform, platform_version setting
   context 'When all attributes are default, on Raspbian 8.0' do
-    let(:packages) { ['parprouted', 'dhcp-helper', 'avahi-daemon'] }
+    let(:packages) { ['wpasupplicant', 'parprouted', 'dhcp-helper', 'avahi-daemon'] }
 
     let(:chef_run) do
       ChefSpec::ServerRunner.new do |node|

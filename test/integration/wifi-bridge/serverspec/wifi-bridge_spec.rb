@@ -8,6 +8,7 @@ describe 'lyraphase-pi::wifi-bridge' do
   # Serverspec examples can be found at
   # http://serverspec.org/resource_types.html
   [
+    'wpasupplicant',
     'parprouted',
     'dhcp-helper',
     'avahi-daemon'
