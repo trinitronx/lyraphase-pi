@@ -12,4 +12,9 @@ issues_url 'https://github.com/trinitronx/lyraphase-pi/issues'
 source_url 'https://github.com/trinitronx/lyraphase-pi'
 
 supports 'debian'
-depends 'sysctl', '~> 0.7'
+
+require 'chef/version'
+require 'chef/version_constraint'
+unless respond_to?(:chef_version) && Chef::VersionConstraint.new('>= 14.0').include?(Chef::VERSION.to_s)
+  depends 'sysctl', '~> 0.7' # ~FC121
+end
