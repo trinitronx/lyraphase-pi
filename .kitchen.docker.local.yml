@@ -26,4 +26,5 @@ driver_config:
 
 platforms:
 - name: debian-8.1
+- name: debian-10.2
 - name: ubuntu-16.04

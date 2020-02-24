@@ -19,6 +19,8 @@ platforms:
   - name: ubuntu-16.04
 # Rasbpian jessie ~= debian 8.0
   - name: debian-8.1
+# Rasbpian buster ~= debian 10
+  - name: debian-10.2
 
 suites:
   - name: default
