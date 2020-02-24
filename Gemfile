@@ -22,9 +22,9 @@ group :test do
 
   group :integration do
     gem 'berkshelf', '~> 6.0'
-    gem 'test-kitchen', '~> 1.16'
+    gem 'test-kitchen', '~> 2.3'
     group :docker do
-      gem 'kitchen-docker', '~> 2.6'
+      gem 'kitchen-docker', '~> 2.9'
     end
     # Use Aaron's Docker Ruby API patch to talk to docker running remotely
     # gem 'kitchen-docker', :github => 'adnichols/kitchen-docker', :branch => 'docker-ruby-api'
