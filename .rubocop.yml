@@ -1,9 +1,6 @@
 AllCops:
   DisplayCopNames: true
-  TargetRubyVersion: 2.2
-
-Rails:
-  Enabled: false
+  TargetRubyVersion: 2.6
 
 # Don't use Perl-ish / Ruby-ish Conventions that make things less readable & understandable
 Style/SymbolArray:
@@ -17,7 +14,7 @@ Style/RegexpLiteral:
 
 
 # Commonly used screens these days easily fit more than 80 characters.
-Metrics/LineLength:
+Layout/LineLength:
   Max: 120
 
 Metrics/BlockLength:
@@ -48,11 +45,11 @@ Metrics/AbcSize:
 
 # No space makes the method definition shorter and differentiates
 # from a regular assignment.
-Style/SpaceAroundEqualsInParameterDefault:
+Layout/SpaceAroundEqualsInParameterDefault:
   EnforcedStyle: no_space
 
 # Most readable form.
-Style/AlignHash:
+Layout/HashAlignment:
   EnforcedHashRocketStyle: table
   EnforcedColonStyle: table
 
@@ -60,13 +57,22 @@ Style/AlignHash:
 Style/HashSyntax:
  EnforcedStyle: ruby19_no_mixed_keys
 
+Style/HashEachMethods:
+  Enabled: true
+
+Style/HashTransformKeys:
+  Enabled: true
+
+Style/HashTransformValues:
+  Enabled: true
+
 # has_key? and has_value? are far more readable than key? and value?
 Style/PreferredHashMethods:
   Enabled: false
 
 # This linter is broken:
 # https://github.com/AtomLinter/linter-rubocop/issues/2
-Style/FileName:
+Naming/FileName:
   Enabled: false
 
 # String#% is by far the least verbose and only object oriented variant.
@@ -94,7 +100,7 @@ Style/RaiseArgs:
 
 # Indenting the chained dots beneath each other is not supported by this cop,
 # see https://github.com/bbatsov/rubocop/issues/1633
-Style/MultilineOperationIndentation:
+Layout/MultilineOperationIndentation:
   Enabled: false
 
 # Fail is an alias of raise. Avoid aliases, it's more cognitive load for no gain.
@@ -106,10 +112,10 @@ Style/SignalException:
 # Suppressing exceptions can be perfectly fine, and be it to avoid to
 # explicitly type nil into the rescue since that's what you want to return,
 # or suppressing LoadError for optional dependencies
-Lint/HandleExceptions:
+Lint/SuppressedException:
   Enabled: false
 
-Style/SpaceInsideBlockBraces:
+Layout/SpaceInsideBlockBraces:
   # The space here provides no real gain in readability while consuming
   # horizontal space that could be used for a better parameter name.
   # Also {| differentiates better from a hash than { | does.
@@ -117,7 +123,7 @@ Style/SpaceInsideBlockBraces:
 
 # No trailing space differentiates better from the block:
 # foo} means hash, foo } means block.
-Style/SpaceInsideHashLiteralBraces:
+Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
 
 # { ... } for multi-line blocks is okay, follow Weirichs rule instead:
@@ -158,7 +164,7 @@ Style/Documentation:
   Enabled: false
 
 # This is just silly. Calling the argument `other` in all cases makes no sense.
-Style/OpMethod:
+Naming/BinaryOperatorParameterName:
   Enabled: false
 
 # There are valid cases, for example debugging Cucumber steps,
@@ -168,5 +174,5 @@ Lint/Debugger:
 
 
 # Reset some HoundCI changes back to Rubocop defaults
-Style/DotPosition:
+Layout/DotPosition:
   EnforcedStyle: leading
