@@ -13,13 +13,30 @@ driver_config:
 #  use_sudo: true
   socket: <%= ENV['DOCKER_HOST'] %>
   privileged: true
+  provision_command:
+    - apt-get -y install ifupdown dbus pciutils kmod iw wireless-tools
+    - echo "SSHD_OPTS='-o UseDNS=no -o UsePAM=no -o PasswordAuthentication=yes -o UsePrivilegeSeparation=no -o PidFile=/tmp/sshd.pid'" > /etc/default/ssh
+    - ln -s /lib/systemd/system/systemd-logind.service /etc/systemd/system/multi-user.target.wants/systemd-logind.service
+    - mkdir /etc/systemd/system/sockets.target.wants/
+    - ln -s /lib/systemd/system/dbus.socket /etc/systemd/system/sockets.target.wants/dbus.socket
+    - systemctl set-default multi-user.target
+  run_command: /sbin/init
   cap_add:
     - ALL
     - SYS_ADMIN
     - NET_ADMIN
     - NET_BIND_SERVICE
     - NET_BROADCAST
+  run_command: /sbin/init
+  volume:
+  - '/sys/fs/cgroup:/sys/fs/cgroup:ro'
+  devices:
+    - /dev/console
+  run_options:
+    tmpfs:
+    - /run
 
 platforms:
 - name: debian-8.1
+- name: debian-10.2
 - name: ubuntu-16.04

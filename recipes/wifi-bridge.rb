@@ -89,6 +89,11 @@ end
   end
 end
 
+service 'wpa_supplicant' do
+  provider Chef::Provider::Service::Systemd
+  action [:enable, :start]
+end
+
 ['parprouted.service',
  'parprouted-watchdog.service',
  'wpa-cli-event-handler.service'].each do |systemd_svc|
