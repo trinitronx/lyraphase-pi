@@ -1,7 +1,7 @@
 # Gemfile
 source 'https://rubygems.org'
 
-ruby '2.4.0'
+ruby '2.6.3'
 
 group :test do
   gem 'rake'
@@ -9,7 +9,7 @@ group :test do
   group :style do
     gem 'chef', '~> 13.1'
     gem 'foodcritic', '~> 11.2'
-    gem 'rubocop', '~> 0.37'
+    gem "rubocop", ">= 0.49.0"
   end
   group :unit do
     group :update_fauxhai do
