@@ -6,6 +6,10 @@
 ## driver name: docker is for portertech/kitchen-docker
 driver:
   name: docker
+  privileged: true
+  run_command: /sbin/init
+  env_variables:
+    container: docker
 ## driver_plugin: docker is for adnichols/kitchen-docker-api
 
 driver_config:
