@@ -6,10 +6,6 @@
 ## driver name: docker is for portertech/kitchen-docker
 driver:
   name: docker
-  privileged: true
-  run_command: /sbin/init
-  env_variables:
-    container: docker
 ## driver_plugin: docker is for adnichols/kitchen-docker-api
 
 driver_config:
@@ -31,6 +27,14 @@ driver_config:
     - NET_ADMIN
     - NET_BIND_SERVICE
     - NET_BROADCAST
+  run_command: /sbin/init
+  volume:
+  - '/sys/fs/cgroup:/sys/fs/cgroup:ro'
+  devices:
+    - /dev/console
+  run_options:
+    tmpfs:
+    - /run
 
 platforms:
 - name: debian-8.1
