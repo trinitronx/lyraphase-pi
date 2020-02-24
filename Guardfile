@@ -10,13 +10,13 @@ guard 'foodcritic', cookbook_paths: '.', cli: '-t ~FC023 -t ~FC005', all_on_star
   watch('metadata.rb')
 end
 
-# guard 'rubocop' do
-#   watch(/attributes\/.+\.rb$/)
-#   watch(/providers\/.+\.rb$/)
-#   watch(/recipes\/.+\.rb$/)
-#   watch(/resources\/.+\.rb$/)
-#   watch('metadata.rb')
-# end
+guard 'rubocop' do
+  watch(/attributes\/.+\.rb$/)
+  watch(/providers\/.+\.rb$/)
+  watch(/recipes\/.+\.rb$/)
+  watch(/resources\/.+\.rb$/)
+  watch('metadata.rb')
+end
 
 guard :rspec, cmd: 'chef exec /opt/chefdk/embedded/bin/rspec', all_on_start: false, notification: false do
   watch(/^libraries\/(.+)\.rb$/)
