@@ -94,7 +94,6 @@ service 'wpa_supplicant' do
   action [:enable, :start]
 end
 
-
 ['parprouted.service',
  'parprouted-watchdog.service',
  'wpa-cli-event-handler.service'].each do |systemd_svc|
